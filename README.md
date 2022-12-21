@@ -130,6 +130,15 @@ that *allows a business
 to receive credit card 
 and electronic transactions*.
 
+Do note that the terms `"payment processor"` and `"payment gateway"` 
+usually fall under the same term - `payment processor`. 
+This is because they work together in achieving 
+the payment processing. 
+So if you see platforms like `Stripe` 
+being mentioned as a "payment processor",
+it's because it offers both `payment gateway` and `payment processor` 
+bundled together (alongside a myriad of other features).
+
 ## Okay... but where does `Paddle` come into all of this?
 
 Now that we got the important concepts out of the way,
@@ -318,6 +327,32 @@ and not any other alternative like `Paddle`
 is because `Stripe` allows us to create an account
 without having to fill business-related information,
 KYC and a company website.
+
+# Pre-requisites
+
+For this tutorial,
+you will need to create a `Stripe` account.
+If you visit https://dashboard.stripe.com/register,
+you will be prompted to create an account.
+
+<img width="1345" alt="stripe-create" src="https://user-images.githubusercontent.com/17494745/208978760-84f42dfd-7eee-4363-b250-6dcca0ee90b7.png">
+
+After filling your information,
+and verifying your account, 
+you will be able to access the main dashboard.
+If you type "API" inside the search box 
+and choose `Developers > API Keys`...
+
+<img width="1345" alt="dashboard" src="https://user-images.githubusercontent.com/17494745/208983008-93f34198-3d0e-4d7b-a493-ccbe87afa5b6.png">
+
+You will be prompted with the following window.
+
+<img width="1345" alt="Screenshot 2022-12-21 at 19 02 28" src="https://user-images.githubusercontent.com/17494745/208983428-c75a0df2-a088-40fe-a68c-3193c829a3a4.png">
+
+These API keys will later be used in the tutorial.
+Save them and don't show them to anyone else!
+We are going to be using these
+as [environment variables](https://github.com/dwyl/learn-environment-variables).
 
 # Thanks!
 
