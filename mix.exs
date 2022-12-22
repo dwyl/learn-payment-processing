@@ -53,7 +53,10 @@ defmodule App.MixProject do
       {:plug_cowboy, "~> 2.5"},
 
       # Auth
-      {:auth_plug, "~> 1.5.1"}
+      {:auth_plug, "~> 1.5.1"},
+
+      # Stripe integration
+      {:stripity_stripe, "~> 2.17"}
     ]
   end
 

@@ -347,7 +347,7 @@ and choose `Developers > API Keys`...
 
 You will be prompted with the following window.
 
-<img width="1345" alt="Screenshot 2022-12-21 at 19 02 28" src="https://user-images.githubusercontent.com/17494745/208983428-c75a0df2-a088-40fe-a68c-3193c829a3a4.png">
+<img width="1345" alt="keys" src="https://user-images.githubusercontent.com/17494745/208983428-c75a0df2-a088-40fe-a68c-3193c829a3a4.png">
 
 These API keys will later be used in the tutorial.
 Save them and don't show them to anyone else!
@@ -458,13 +458,17 @@ And finally, inside `app_html/app.html.heex`:
 </div>
 ```
 
-Now, if you run:
+Now, you can create a local file 
+called `.env` 
+(don't forget to **never commit this file**, 
+as it contains sensitive information and API keys)
+and paste the following.
 
 ```sh
 export AUTH_API_KEY=XXXX
 ```
 
-using your `AUTH_API_KEY` 
+If you run `source .env` 
 and restart your server with `mix phx.server`
 and access `/dashboard` directly,
 you will be redirected to a page where you can SSO using Google or Github.
@@ -630,6 +634,14 @@ change the contents with the next lines:
 ```
 
 And you should be done!
+In our main page we are checking if any user is logged in or not.
+If there's a user authenticated, 
+we show his username and a button in which he can press
+to purchase our sweet dashboard.
+
+On the other hand, if there isn't any user authenticated, 
+a `login` button is shown.
+
 The app should look like the following.
 
 ![with_auth](https://user-images.githubusercontent.com/17494745/209171533-2a51572b-2d0f-4789-a28b-7d77771caaa5.gif)
@@ -641,6 +653,452 @@ in our Phoenix application.
 This is going to be fun, let's do this! 👏
 
 ## 3. Stripe integration
+
+Let's start by installing the package
+that will allows us to communicate with **Stripe**.
+We are going to be using 
+[`stripity-stripe`](https://github.com/beam-community/stripity-stripe).
+This library will allow us to easily integrate Stripe in our Phoenix application.
+
+Go to your `mix.exs` file
+and add this inside your dependency section.
+
+```elixir
+{:stripity_stripe, "~> 2.17"}
+```
+
+and run `mix deps.get` to fetch this new dependency.
+Following [their documentation](https://github.com/beam-community/stripity-stripe#configuration),
+we need to add the next configuration inside `config.ex`.
+
+```elixir
+config :stripity_stripe, api_key: System.get_env("STRIPE_API_KEY")
+```
+
+As you can see, we are using an environment variable
+to serve the `STRIKE_API_KEY` so the library can use it to make requests.
+We need to add these keys to our `.env` file.
+To check your own API keys, 
+go to https://dashboard.stripe.com/test/apikey
+
+<img width="1345" alt="keys" src="https://user-images.githubusercontent.com/17494745/208983428-c75a0df2-a088-40fe-a68c-3193c829a3a4.png">
+
+and paste the keys in your `.env` file.
+
+```
+export STRIPE_API_KEY= secret key
+export STRIPE_PUBLIC= publishable key
+```
+
+After inputting these keys, 
+you can stop the server and,
+in the same terminal session, run `source .env`,
+so you can load these environment variables
+and so they are available when you run `mix phx.server` again.
+
+Awesome job! 🎉
+We can now start using it!
+
+### 3.1 Creating a **Stripe Checkout Session**
+
+To make this tutorial simple, 
+we are going to be using a [`Stripe Checkout`](https://stripe.com/docs/payments/checkout).
+This makes it easy to make a payment 
+because the user is redirected to a page hosted by `Stripe` 
+with information about the product being purchased. 
+Therefore, we don't need to create the page ourselves.
+We *could* but this is quicker 😉.
+
+With this in mind, 
+we want to create a [`checkout session`](https://stripe.com/docs/api/checkout/sessions).
+The user will either be successful with his payment
+or fail. 
+We will be building a page for both.
+
+Let's implement this.
+
+Head on to to `lib/app_web/router.ex`
+and add the following scope.
+
+```elixir
+  scope "/purchase", AppWeb do
+    pipe_through :browser
+    pipe_through :auth
+
+    resources "/checkout-session", CheckoutSessionController, only: [:create]
+
+    get "/success", PageController, :success
+    get "/cancel", PageController, :cancel
+  end
+```
+
+We want **only authenticated users** to go to
+`/purchase/checkout-session` to purchase our product.
+When they visit this URL, they will be redirected to our `Stripe Checkout` page,
+with information about our product.
+They payment will either *succeed* 
+(users will be redirected to `/purchase/success`)
+or *fail*
+(users will be redirected to `/purchase/cancel`).
+
+While the `success` and `cancel` pages 
+are being handled by the already existent `PageController`,
+redirecting the users to the `Stripe Checkout` page 
+is being handled by `CheckoutSessionController`. 
+We need to create it!
+
+Inside `lib/app_web/controllers/`, 
+create a file called `checkout_session_controller.ex`
+and paste the code:
+
+```elixir
+defmodule AppWeb.CheckoutSessionController do
+  use AppWeb, :controller
+
+  def create(conn, _params) do
+    url = AppWeb.Endpoint.url()
+
+    params = %{
+      line_items: [
+        %{
+          price: System.get_env("PRODUCT_PRICE_ID"),
+          quantity: 1
+        }
+      ],
+      mode: "payment",
+      # https://stripe.com/docs/payments/checkout/custom-success-page
+      success_url: url <> ~p"/purchase/success?session_id={CHECKOUT_SESSION_ID}",
+      cancel_url: url <> ~p"/purchase/cancel?session_id={CHECKOUT_SESSION_ID}",
+      automatic_tax: %{enabled: true}
+    }
+
+    {:ok, session} = Stripe.Session.create(params)
+
+    conn
+    |> put_status(303)
+    |> redirect(external: session.url)
+  end
+end
+```
+
+Let's analyze the code.
+
+We are using `Stripe.session.create/1` 
+to create a [`Session`](https://stripe.com/docs/api/checkout/sessions)
+in Stripe. 
+We need to pass a few required parameters. 
+We are following [their API specification](https://stripe.com/docs/api/checkout/sessions/object),
+so you can always check their documentation if you're lost
+on what fields you need to pass.
+- the `**mode**` field pertains to the mode of the checkout session.
+We can setup subscription or one-time payments.
+We are doing the latter.
+- the `**success_url**` and `**cancel_url**` refer to the redirection URLs
+after the user either completes or cancels the checkout session.
+We are adding a `{CHECKOUT_SESSION_ID}` template in the URL.
+This tells Stripe to pass the `Checkout Session ID` to the client-side.
+[This will allow us to customize the order information
+upon completion or cancellation.](https://stripe.com/docs/payments/checkout/custom-success-page)
+- we set `**automatic_tax**` to be enabled so it makes tax conversions automatically.
+- the `**line_items**` array refer to the list of items the customer is purchasing.
+We are passing the item `id` and the `quantity`.
+
+We are then creating a session 
+and redirecting the user to the `Checkout` page.
+
+As you might have noticed, 
+we are using an environment variable `PRODUCT_PRICE_ID`
+to set `price` field of the product.
+
+We *haven't created this yet*.
+So let's do it!
+
+### 3.2 Creating a `Product` to sell
+
+As it stands, we have no products for customers to purchase.
+Let's create one! 😎
+
+Go to https://dashboard.stripe.com/test/products/create
+and fill up the information about your product.
+
+
+<img width="1239" alt="product_information" src="https://user-images.githubusercontent.com/17494745/209212460-b04c1ab0-0f6c-4365-b634-b6788d9aaffc.png">
+
+> This should be all you need to do.
+However, sometimes you may experience an error
+while creating a `checkout session` 
+when doing the request in Phoenix.
+>
+> The error is probably 
+`Stripe Tax has not been activated on your account. 
+Please visit https://dashboard.stripe.com/settings/tax/activate to get started.`
+Don't be alarmed.
+If you follow the link, enable `Stripe Tax`
+and just create a tax rate on whatever country you want,
+You can check your tax rates in 
+https://dashboard.stripe.com/test/tax-rates.
+>
+> <img width="1350" alt="image" src="https://user-images.githubusercontent.com/17494745/209214128-e199279d-a3b6-4f99-9184-8417369e0af8.png">
+
+After creating your product,
+you will be redirected to the page of the product created.
+You can always check the products you created 
+in https://dashboard.stripe.com/test/products.
+
+The page of the product created should look like this.
+
+<img width="1239" alt="product page" src="https://user-images.githubusercontent.com/17494745/209214262-24dc0852-7a78-46d3-a907-368ce4bab2b6.png">
+
+We are going to be using the `API ID` 
+in the Pricing section. 
+Copy it and paste it in your `.env` file.
+
+```
+export PRODUCT_PRICE_ID= price id
+```
+
+In the same terminal session, kill the server,
+run `source .env` and you should be good to go!
+
+### 3.3 Success and failure after `Checkout Session`
+
+As we've stated before, 
+the users are redirected to a `success` or `cancel` page
+depending on the outcome of the `Checkout Session`.
+
+Since we defined these endpoints 
+be controlled by `PageController`, 
+we need to add these handlers.
+
+Go to `lib/app_web/controllers/page_controller.ex`
+and add the following piece of code:
+
+```elixir
+  def success(conn, %{"session_id" => session_id}) do
+    case Stripe.Session.retrieve(session_id) do
+      {:ok, _session} ->
+        render(conn, :success, layout: false)
+
+      {:error, _error} ->
+        conn
+        |> put_status(303)
+        |> redirect(to: ~p"/")
+    end
+  end
+
+  def success(conn, _params) do
+    conn
+    |> put_status(303)
+    |> redirect(to: ~p"/")
+  end
+
+  def cancel(conn, %{"session_id" => session_id}) do
+
+    case Stripe.Session.retrieve(session_id) do
+      {:ok, _session} ->
+        render(conn, :cancel, layout: false)
+
+      {:error, _error} ->
+        conn
+        |> put_status(303)
+        |> redirect(to: ~p"/")
+    end
+  end
+
+  def cancel(conn, _params) do
+    conn
+    |> put_status(303)
+    |> redirect(to: ~p"/")
+  end
+```
+
+Let's break it down.
+
+When creating a session, 
+we are requesting Stripe to redirect the user
+*back* to us with a query parameter `session_id`
+with the session ID.
+
+This `session_id` will allow us to 
+conditionally render these pages according to the outcome
+of the process.
+
+Both `success` and `cancel` workflows have the same workflow.
+
+When the customer successfully pays for the product,
+we check if the `session_id` is valid 
+by retrieving it from `Stripe`.
+
+```elixir
+Stripe.Session.retrieve(session_id)
+```
+
+If it is successful, we render a page confirming the payment.
+If it is not, we simply redirect the user to the homepage.
+If the user tries to directly access `/purchase/success`,
+he is redirected to the homepage as well.
+
+The same procedure happens in the `cancel` scenario.
+
+We now need to create these pages!
+Inside `lib/app_web/controllers/page_html`,
+create two files.
+Create `success.html.heex` 
+and use this code:
+
+```html
+<div class="bg-gray-100 h-screen flex flex-col justify-center items-center">
+    <div class="p-6  md:mx-auto">
+        <svg viewBox="0 0 24 24" class="text-green-600 w-16 h-16 mx-auto my-6">
+            <path fill="currentColor"
+                d="M12,0A12,12,0,1,0,24,12,12.014,12.014,0,0,0,12,0Zm6.927,8.2-6.845,9.289a1.011,1.011,0,0,1-1.43.188L5.764,13.769a1,1,0,1,1,1.25-1.562l4.076,3.261,6.227-8.451A1,1,0,1,1,18.927,8.2Z">
+            </path>
+        </svg>
+        <div class="text-center">
+            <h3 class="md:text-2xl text-base text-gray-900 font-semibold text-center">Payment Done!</h3>
+            <p class="text-gray-600 my-2">Thank you for completing your secure online payment.</p>
+            <p> Have a great day!  </p>
+            <div class="py-10 text-center">
+                <.link
+                  href={~p"/dashboard"}
+                  class="px-12 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3"
+                >
+                  Go to dashboard
+                </.link>
+            </div>
+        </div>
+    </div>
+</div>
+```
+
+In this page, we are thanking the user
+for completing the payment 
+and giving him the option to access
+the ever so glorious ✨**dashboard**✨.
+
+In the same directory,
+create the `cancel.html.heex` file:
+
+```elixir
+<section class="flex items-center h-screen p-16">
+	<div class="container flex flex-col items-center justify-center px-5 mx-auto my-8">
+		<div class="max-w-lg text-center">
+			<h2 class="mb-8 font-extrabold text-9xl dark:text-gray-600">
+				Oh no...
+			</h2>
+			<p class="text-2xl font-semibold md:text-3xl">looks like something went wrong.</p>
+			<p class="mt-4 mb-8 dark:text-gray-400">Perhaps you cancelled your order? Internet went down? We can help you get back on track!</p>
+            <.link
+                href={~p"/"}
+                class="px-8 py-3 font-semibold rounded text-white bg-violet-400"
+            >
+                Back to homepage
+            </.link>
+		</div>
+	</div>
+</section>
+```
+
+In this page, 
+we state that something went wrong 
+and show a button to return to the homepage.
+
+### 3.4 Making our "`dashboard`" cool
+
+We don't really have a `dashboard` to show.
+In fact, we don't need to, it's out of the scope of this tutorial.
+So let's just show a Nyan Cat! 🐈
+
+Inside `lib/app_web/controllers/app_html/app.html.heex`,
+change the code to the following:
+
+```elixir
+<div class="bg-bottom h-screen flex flex-col justify-center items-center">
+    <img src="https://raw.githubusercontent.com/gist/brudnak/aba00c9a1c92d226f68e8ad8ba1e0a40/raw/e1e4a92f6072d15014f19aa8903d24a1ac0c41a4/nyan-cat.gif"
+            alt="Nyan cat"
+            class="max-w-[60%]"
+            />
+    <div class="text-center">
+        <h3 class="md:text-5xl text-base text-gray-900 font-semibold text-center">Nyan Cat!</h3>
+        <p class="text-gray-600 my-2">Yup, it's a nyan cat. It's not a dashboard.</p>
+        <p class="text-gray-400 mt-12 mb-12">sorry.</p>
+
+        <.link
+            navigate={~p"/"}
+            class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br
+            focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg
+            shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 "
+            >
+            go back
+        </.link>
+    </div>
+</div>
+```
+
+All that's left is for the `Purchase` button
+in our homepage to redirect the user
+to the `/purchase/checkout-session`
+for the customer to pay for the product.
+
+Inside `lib/app_web/controllers/page_html/home.html.heex`,
+locate the line:
+
+```html
+<span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+    Purchase
+</span>
+```
+
+And replace it with:
+
+```html
+<.link
+  href={~p"/purchase/checkout-session"}
+  method="post"
+  class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0"
+>
+  Purchase
+</.link>
+```
+
+And you should be done! 🎉
+
+Let's see what we've done so far.
+Run `mix phx.server` 
+(make sure you loaded the env variables
+with `source .env`) 
+and visit `localhost:4000`.
+You should see the following! 👏
+
+![stripe_integrated](https://user-images.githubusercontent.com/17494745/209217397-4b1c1cb4-6777-4ca0-998e-b860030642a8.gif)
+
+> You can complete the payment 
+using test data with the credit card.
+You can fill whatever e-mail address (real or not)
+or name to pay. 
+The expiry date and CVC can also be random.
+>
+> - Payment succeeds: `4242 4242 4242 4242`
+> - Payment requires authentication: `4000 0025 0000 3155`
+> - Payment is declined: `4000 0000 0000 9995`
+
+You can check the customers info in 
+https://dashboard.stripe.com/test/customers.
+You may delete the customers, if you want.
+
+<img width="1214" alt="users" src="https://user-images.githubusercontent.com/17494745/209217798-ffd4a694-947d-4aad-ac20-cbcdf1c56143.png">
+
+## 4. Blocking unpaid users from `dashboard`
+
+We now got a decent workflow going.
+But authenticated can still access `/dashboard`
+while just being authenticated.
+We want them to be logged in 
+*and also have paid to access it*.
+
+//TODO
+
+
 
 
 # Thanks!

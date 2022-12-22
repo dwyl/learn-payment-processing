@@ -18,9 +18,22 @@ defmodule AppWeb.Router do
     pipe_through :authoptional
 
     get "/", PageController, :home
+
     get "/login", AuthController, :login
     get "/logout", AuthController, :logout
+
   end
+
+  scope "/purchase", AppWeb do
+    pipe_through :browser
+    pipe_through :auth
+
+    resources "/checkout-session", CheckoutSessionController, only: [:create]
+
+    get "/success", PageController, :success
+    get "/cancel", PageController, :cancel
+  end
+
 
   scope "/dashboard", AppWeb do
     pipe_through :browser
