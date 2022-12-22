@@ -328,7 +328,7 @@ is because `Stripe` allows us to create an account
 without having to fill business-related information,
 KYC and a company website.
 
-# Pre-requisites
+## Pre-requisites
 
 For this tutorial,
 you will need to create a `Stripe` account.
@@ -353,6 +353,16 @@ These API keys will later be used in the tutorial.
 Save them and don't show them to anyone else!
 We are going to be using these
 as [environment variables](https://github.com/dwyl/learn-environment-variables).
+
+Make sure you also have 
+[`Elixir`](https://elixir-lang.org/)
+and [`Phoenix`](https://www.phoenixframework.org/)
+installed.
+
+## 1. Create a Phoenix project
+
+
+
 
 # Thanks!
 
