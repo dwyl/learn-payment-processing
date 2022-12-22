@@ -18,7 +18,7 @@ Not all applications are free.
 There are some that can be acquired through
 a [one time purchase](https://git-fork.com/buy).
 There are others
-that are [subscription-based](https://www.notion.so/pricing).
+that are [subscription-based](https://www.crunchyroll.com/welcome).
 Regardless of the type, all of these share one thing in common:
 **they use payment processing platforms/gateways
 to manage transactions**.
