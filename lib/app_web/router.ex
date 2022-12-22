@@ -11,11 +11,15 @@ defmodule AppWeb.Router do
   end
 
   pipeline :auth, do: plug(AuthPlug)
+  pipeline :authoptional, do: plug(AuthPlugOptional, %{})
 
   scope "/", AppWeb do
     pipe_through :browser
+    pipe_through :authoptional
 
     get "/", PageController, :home
+    get "/login", AuthController, :login
+    get "/logout", AuthController, :logout
   end
 
   scope "/dashboard", AppWeb do
