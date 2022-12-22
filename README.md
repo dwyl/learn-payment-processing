@@ -356,11 +356,130 @@ as [environment variables](https://github.com/dwyl/learn-environment-variables).
 
 Make sure you also have 
 [`Elixir`](https://elixir-lang.org/)
-and [`Phoenix`](https://www.phoenixframework.org/)
+and [`Phoenix 1.7rc`](https://www.phoenixframework.org/)
 installed.
 
 ## 1. Create a Phoenix project
 
+Let's start by creating a Phoenix project.
+Run `mix phx.new app` 
+and when prompted, type `y` to accept downloading the dependencies.
+
+After this, if you run `mix phx.server`
+and visit `localhost:4000`, 
+you will be able to see the default landing page.
+
+![default](https://user-images.githubusercontent.com/17494745/209141154-a9d88988-6a36-4faa-8bbf-f1cf09684bf5.png)
+
+We will want the user to be able to log in.
+We will check if the user has *paid* or not
+for using the application. 
+If he hasn't, he is redirected to a `buy` page.
+If he has, he will have access to it!
+
+It's a simple application, for sure.
+But it's still important to know **how** to properly implement it.
+
+## 2. Add `auth_plug` for user login
+
+We will be using 
+[`auth_plug`](https://github.com/dwyl/auth_plug)
+so users are able to login.
+
+Let's install it.
+Add the following to the `deps` section in `mix.exs`.
+
+```elixir
+def deps do
+  [
+    {:auth_plug, "~> 1.5.1"}
+  ]
+end
+```
+
+And run `mix deps.get`.
+If you [follow the package instructions](https://github.com/dwyl/auth_plug)
+and get your `AUTH_API_KEY`.
+
+Now head over to `lib/app_web/router.ex`
+and add the following lines of code.
+
+```elixir
+  pipeline :auth, do: plug(AuthPlug)
+
+  scope "/dashboard", AppWeb do
+    pipe_through :browser
+    pipe_through :auth
+
+    get "/", AppController, :home
+  end
+```
+
+The `/dashboard` protected endpoint will only be accessible
+for logged in users because we are using the 
+`:auth` pipeline.
+
+We are using `AppController`, 
+which is not yet created. 
+Create the following files.
+
+- `lib/app_web/controllers/app_controller.ex`
+- `lib/app_web/controllers/app_html.ex`
+- `lib/app_web/controllers/app_html/app.html.heex`
+
+Inside `app_html.ex`, add the following code.
+
+```elixir
+defmodule AppWeb.AppHTML do
+  use AppWeb, :html
+
+  embed_templates "app_html/*"
+end
+```
+
+
+Inside `app_controller.ex`, add the following code.
+
+```elixir
+defmodule AppWeb.AppController do
+  use AppWeb, :controller
+
+  def home(conn, _params) do
+    render(conn, :app, layout: false)
+  end
+end
+```
+
+And finally, inside `app_html/app.html.heex`:
+
+```html
+<div>
+    logged in
+</div>
+```
+
+Now, if you run:
+
+```sh
+export AUTH_API_KEY=XXXX
+```
+
+using your `AUTH_API_KEY` 
+and restart your server with `mix phx.server`
+and access `/dashboard` directly,
+you will be redirected to a page where you can SSO using Google or Github.
+
+<img width="1345" alt="redirection" src="https://user-images.githubusercontent.com/17494745/209158781-5242b18f-9abb-4c0c-8703-5be7ed9509f7.png">
+
+After logging in, 
+the user has access to the URL!
+
+<img width="686" alt="successful_login" src="https://user-images.githubusercontent.com/17494745/209159171-ee959b68-f4f6-4e69-bf7f-5e0552c1108e.png">
+
+Congratulations, you just added basic authenticated to our application!
+However, that's not quite what we want. 
+We want the user to be logged in 
+and *also* being a paying costumer so they have access to `/dashboard`.
 
 
 
