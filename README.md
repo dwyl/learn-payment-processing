@@ -1096,7 +1096,38 @@ while just being authenticated.
 We want them to be logged in 
 *and also have paid to access it*.
 
-//TODO
+We are currently not tracking our customers
+who have paid and should be granted access.
+We are going to be needing to create
+a way to save `User`s object 
+with the referring `stripe_id` 
+and a boolean field referring to the payment status.
+
+We could use a PostgresSQL engine for this,
+but for this use case it's a bit overkill.
+Instead, to simplify deployment,
+we will be using 
+[`Erland Term Storage (ETS)`](https://elixirschool.com/en/lessons/storage/ets).
+This is a in-memory storage engine built into OTP 
+and can be employed to store large amounts of data 
+*with constant time data access*.
+Do note that since this engine is in-memory,
+**all data is lost when the process ends/server is shutdown**.
+
+There is an Elixir wrapper that makes it easy to use `ETS`.
+[`ets`](https://github.com/TheFirstAvenger/ets).
+
+Let's install it.
+
+Add it to the `deps` section inside `mix.exs`.
+
+```elixir
+def deps do
+  [
+    {:ets, "~> 0.9.0"}
+  ]
+end
+```
 
 
 
