@@ -22,6 +22,9 @@ defmodule App.Application do
       # {App.Worker, arg}
     ]
 
+    # Creating ETS user table
+    {:ok, _set} = UsersTable.init()
+
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: App.Supervisor]

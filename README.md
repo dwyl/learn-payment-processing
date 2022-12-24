@@ -1129,8 +1129,76 @@ def deps do
 end
 ```
 
+With that installed, 
+we are going to be creating a module 
+that will *manage the users table*.
+We are going to create it on startup,
+and create users/edit them.
 
+For that, create a file in `lib/app/users.ex`.
 
+```elixir
+defmodule UsersTable do
+
+  alias ETS.Set
+
+  @table :users_table
+
+  def init do
+    Set.new(name: @table)
+  end
+
+  def list_users do
+    @table
+    |> Set.wrap_existing!()
+    |> Set.to_list()
+  end
+
+  def create_user(stripe_id) do
+    @table
+    |> Set.wrap_existing!()
+    |> Set.put_new( {stripe_id, false})
+  end
+
+  def update_payment_status(%{:stripe_id => stripe_id, :status => status}) do
+    @table
+    |> Set.wrap_existing!()
+    |> Set.put({stripe_id, status})
+  end
+
+end
+```
+
+Let's go over what we have done.
+We are going to be saving our users
+with a tuple containing the `**stripe_id**`
+and a `**status**` boolean field,
+referring to whether the user has paid or not.
+
+All the functions being used are used
+according to the [`ets` wrapper documentation](https://github.com/TheFirstAvenger/ets).
+- the `init/0` function creates the table to store our users.
+- `list_users` returns the list of users.
+- `create_user/1` receives a `stripe_id` and creates a user object.
+By default, the `status` field is created with `false`.
+- `update_payment_status/1` receives a user object
+and updates accordingly.
+
+Let's make use of some of these functions.
+We want to setup the `ETS` table on the process startup.
+For this, we are going to initiate the table
+on the `start/1` function inside `lib/app/application.ex`.
+This functions is executed when the process is created,
+so it fits right our needs!
+
+Inside this function, add:
+
+```elixir
+# Creating ETS user table     
+{:ok, _set} = UsersTable.init()
+```
+
+Awesome!
 
 # Thanks!
 
