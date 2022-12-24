@@ -1154,16 +1154,22 @@ defmodule UsersTable do
     |> Set.to_list()
   end
 
-  def create_user(stripe_id) do
+  def create_user(%{:stripe_id => stripe_id, :person_id => person_id}) do
     @table
     |> Set.wrap_existing!()
-    |> Set.put_new( {stripe_id, false})
+    |> Set.put_new( {person_id, stripe_id, false})
   end
 
-  def update_payment_status(%{:stripe_id => stripe_id, :status => status}) do
-    @table
+  def update_payment_status(%{:person_id => person_id, :status => new_status}) do
+
+    set = @table
     |> Set.wrap_existing!()
-    |> Set.put({stripe_id, status})
+
+    {person_id, stripe_id, _status} = set
+      |> Set.get!(person_id)
+
+    set
+    |> Set.put({person_id, stripe_id, new_status})
   end
 
 end
@@ -1171,7 +1177,8 @@ end
 
 Let's go over what we have done.
 We are going to be saving our users
-with a tuple containing the `**stripe_id**`
+with a tuple containing the `**stripe_id**`,
+the `person_id` of the logged in user
 and a `**status**` boolean field,
 referring to whether the user has paid or not.
 
@@ -1179,7 +1186,8 @@ All the functions being used are used
 according to the [`ets` wrapper documentation](https://github.com/TheFirstAvenger/ets).
 - the `init/0` function creates the table to store our users.
 - `list_users` returns the list of users.
-- `create_user/1` receives a `stripe_id` and creates a user object.
+- `create_user/2` receives a `stripe_id` and `person_id`
+and creates a user object.
 By default, the `status` field is created with `false`.
 - `update_payment_status/1` receives a user object
 and updates accordingly.
