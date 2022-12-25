@@ -3,9 +3,14 @@ defmodule UsersTable do
   alias Pockets
 
   @table :users_table
+  @filepath "cache.dets"
 
   def init do
-    Pockets.new(@table, "cache.dets")
+    case Pockets.new(@table, @filepath) do
+      {:ok, set} -> {:ok, set}
+      {:error, _} ->
+        Pockets.open(@table, @filepath)
+    end
   end
 
   def list_users do

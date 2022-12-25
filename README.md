@@ -1146,9 +1146,14 @@ defmodule UsersTable do
   alias Pockets
 
   @table :users_table
+  @filepath "cache.dets"
 
   def init do
-    Pockets.new(@table, "cache.dets")
+    case Pockets.new(@table, @filepath) do
+      {:ok, set} -> {:ok, set}
+      {:error, _} ->
+        Pockets.open(@table, @filepath)
+    end
   end
 
   def list_users do
@@ -1172,6 +1177,7 @@ referring to whether the user has paid or not.
 All the functions being used are used
 according to the [`ets` wrapper documentation](https://github.com/TheFirstAvenger/ets).
 - the `init/0` function creates the table to store our users.
+If the file already exists, we open the file.
 - `list_users` returns the list of users.
 - `create_user/3` receives a `stripe_id`, `person_id` and `status` 
 (pertaining to whether the payment has been made or not)
@@ -1181,8 +1187,14 @@ Let's make use of some of these functions.
 We want to setup the `DETS` table on the process startup.
 For this, we are going to initiate the table
 on the `start/1` function inside `lib/app/application.ex`.
-This functions is executed when the process is created,
+This function is executed when the process is created,
 so it fits right our needs!
+Add the following code below the `children` array variable
+inside `start/1`.
+
+```elixir
+UsersTable.init()
+```
 
 
 Awesome!
