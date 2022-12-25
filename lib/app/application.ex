@@ -22,8 +22,10 @@ defmodule App.Application do
       # {App.Worker, arg}
     ]
 
-    # Creating ETS user table
-    {:ok, _set} = UsersTable.init()
+    # Creating DETS user table
+    UsersTable.init()
+    #UsersTable.create_user(%{person_id: 1, stripe_id: 1, status: false})
+    #dbg(UsersTable.list_users())
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options

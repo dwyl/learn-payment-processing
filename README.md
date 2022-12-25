@@ -1114,8 +1114,11 @@ and can be employed to store large amounts of data
 Do note that since this engine is in-memory,
 **all data is lost when the process ends/server is shutdown**.
 
-There is an Elixir wrapper that makes it easy to use `ETS`.
-[`ets`](https://github.com/TheFirstAvenger/ets).
+There is an Elixir wrapper that makes it easy to use `ETS` and `DETS`, 
+where the latter is a disk-based variant of the former,
+where data is persisted on disk.
+We'll be using
+[`pockets`](https://github.com/fireproofsocks/pockets).
 
 Let's install it.
 
@@ -1124,7 +1127,7 @@ Add it to the `deps` section inside `mix.exs`.
 ```elixir
 def deps do
   [
-    {:ets, "~> 0.9.0"}
+    {:pockets, "~> 0.1.0"}
   ]
 end
 ```
@@ -1140,36 +1143,20 @@ For that, create a file in `lib/app/users.ex`.
 ```elixir
 defmodule UsersTable do
 
-  alias ETS.Set
+  alias Pockets
 
   @table :users_table
 
   def init do
-    Set.new(name: @table)
+    Pockets.new(@table, "cache.dets")
   end
 
   def list_users do
-    @table
-    |> Set.wrap_existing!()
-    |> Set.to_list()
+    Pockets.to_map(@table)
   end
 
-  def create_user(%{:stripe_id => stripe_id, :person_id => person_id}) do
-    @table
-    |> Set.wrap_existing!()
-    |> Set.put_new( {person_id, stripe_id, false})
-  end
-
-  def update_payment_status(%{:person_id => person_id, :status => new_status}) do
-
-    set = @table
-    |> Set.wrap_existing!()
-
-    {person_id, stripe_id, _status} = set
-      |> Set.get!(person_id)
-
-    set
-    |> Set.put({person_id, stripe_id, new_status})
+  def create_user(%{:stripe_id => stripe_id, :person_id => person_id, :status => status}) do
+    Pockets.put(@table, person_id, %{stripe_id: stripe_id, status: status})
   end
 
 end
@@ -1186,25 +1173,17 @@ All the functions being used are used
 according to the [`ets` wrapper documentation](https://github.com/TheFirstAvenger/ets).
 - the `init/0` function creates the table to store our users.
 - `list_users` returns the list of users.
-- `create_user/2` receives a `stripe_id` and `person_id`
+- `create_user/3` receives a `stripe_id`, `person_id` and `status` 
+(pertaining to whether the payment has been made or not)
 and creates a user object.
-By default, the `status` field is created with `false`.
-- `update_payment_status/1` receives a user object
-and updates accordingly.
 
 Let's make use of some of these functions.
-We want to setup the `ETS` table on the process startup.
+We want to setup the `DETS` table on the process startup.
 For this, we are going to initiate the table
 on the `start/1` function inside `lib/app/application.ex`.
 This functions is executed when the process is created,
 so it fits right our needs!
 
-Inside this function, add:
-
-```elixir
-# Creating ETS user table     
-{:ok, _set} = UsersTable.init()
-```
 
 Awesome!
 

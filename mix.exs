@@ -59,7 +59,7 @@ defmodule App.MixProject do
       {:stripity_stripe, "~> 2.17"},
 
       # Storage
-      {:ets, "~> 0.9.0"}
+      {:pockets, "~> 0.1.0"}
 
     ]
   end
