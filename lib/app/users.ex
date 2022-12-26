@@ -21,4 +21,8 @@ defmodule UsersTable do
     Pockets.put(@table, person_id, %{stripe_id: stripe_id, status: status})
   end
 
+  def fetch_user(person_id) do
+    Pockets.get(@table, person_id)
+  end
+
 end

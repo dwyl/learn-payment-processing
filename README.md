@@ -1164,6 +1164,10 @@ defmodule UsersTable do
     Pockets.put(@table, person_id, %{stripe_id: stripe_id, status: status})
   end
 
+  def fetch_user(person_id) do
+    Pockets.get(@table, person_id)
+  end
+
 end
 ```
 
@@ -1182,6 +1186,8 @@ If the file already exists, we open the file.
 - `create_user/3` receives a `stripe_id`, `person_id` and `status` 
 (pertaining to whether the payment has been made or not)
 and creates a user object.
+- `fetch_user/1` retrieves the persisted user
+according to the given` person_id`.
 
 Let's make use of some of these functions.
 We want to setup the `DETS` table on the process startup.
@@ -1198,6 +1204,12 @@ UsersTable.init()
 
 
 Awesome!
+
+
+
+# todo
+ver todo no checkout_session_controller.ex
+remove swoosh, mailer, postgres, ecto
 
 # Thanks!
 
