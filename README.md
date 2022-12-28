@@ -769,6 +769,7 @@ defmodule AppWeb.CheckoutSessionController do
       # https://stripe.com/docs/payments/checkout/custom-success-page
       success_url: url <> ~p"/purchase/success?session_id={CHECKOUT_SESSION_ID}",
       cancel_url: url <> ~p"/purchase/cancel?session_id={CHECKOUT_SESSION_ID}",
+      # user_email: conn.assigns.person.email,
       automatic_tax: %{enabled: true}
     }
 
@@ -802,6 +803,8 @@ upon completion or cancellation.](https://stripe.com/docs/payments/checkout/cust
 - we set `**automatic_tax**` to be enabled so it makes tax conversions automatically.
 - the `**line_items**` array refer to the list of items the customer is purchasing.
 We are passing the item `id` and the `quantity`.
+- you can optionally pass a `customer_email`, 
+so the field is already defined within the checkout session from the get-go.
 
 We are then creating a session 
 and redirecting the user to the `Checkout` page.
