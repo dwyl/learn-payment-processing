@@ -34,34 +34,31 @@ of the project/application/company.
 
 Let's think for a minute of what happens
 when we purchase something online.
-Assume we want to [buy Fork](https://git-fork.com/buy), 
-a neat open-source Git GUI. 
+Assume we want to [buy Postico2](https://eggerapps.at/postico2/), 
+a PostgreSQL database editor. 
 
-<img width="1198" alt="buy-fork-1" src="https://user-images.githubusercontent.com/17494745/208933958-8747bf88-cd74-4ec1-8739-430fdb1874ab.png">
+<img width="1214" alt="buy-1" src="https://user-images.githubusercontent.com/17494745/209847803-5fae9197-afed-46c3-9746-5faaac73fe6f.png">
 
-If we click the `Buy Fork` button,
-we are met with a modal 
-for a one-time purchase license.
+If we click the `Buy Postico 2` button,
+we are redirected to a page where we can buy a license.
 
-<img width="1198" alt="buy-fork-modal" src="https://user-images.githubusercontent.com/17494745/208934931-e5dedff8-5852-49bf-afe3-55d4f8ea9649.png">
+<img width="1214" alt="buy-2" src="https://user-images.githubusercontent.com/17494745/209847802-afc048d9-9fbd-42d0-8e0f-3f117a5bdeac.png">
 
 If we proceed to payment, 
-we can pay through Paypal
-or Apple Pay
-or even with any credit-card!
+we can pay with a credit card or Paypal.
 
-<img width="1198" alt="buy-fork-options" src="https://user-images.githubusercontent.com/17494745/208935302-d7c724a8-cc1c-4026-9743-83c8a25066f6.png">
+<img width="1214" alt="buy-3" src="https://user-images.githubusercontent.com/17494745/209847799-66c8c54e-bf16-4719-a324-2b7793e7be21.png">
 
 But how was this implemented?
 Is there any service behind this?
 For those with a keen eye, 
 you might have noticed 
-that in the lower third of the screen,
+that in the upprt third of the screen,
 it seems that this transaction
 is being handled by 
-[`Paddle.com`](https://www.paddle.com/).
+[`MyCommerce.com`](https://www.mycommerce.com/).
 
-`Paddle.com` can be described as a
+`MyCommerce.com` can be described as a
 *payment infrastructure provider*
 that takes care of transactions 
 and payments made by the users of your application
@@ -139,14 +136,7 @@ being mentioned as a "payment processor",
 it's because it offers both `payment gateway` and `payment processor` 
 bundled together (alongside a myriad of other features).
 
-## Okay... but where does `Paddle` come into all of this?
-
-Now that we got the important concepts out of the way,
-you might be wondering:
-"That's cool, but what does this have to do 
-with the `Paddle` example you gave earlier?"
-
-Glad you asked! 👍
+## Okay... I've seen people using `Paddle`. Is it any different?
 
 If you've done online shopping before,
 you probably came across a button like this,
