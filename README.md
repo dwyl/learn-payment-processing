@@ -1293,11 +1293,6 @@ Users that *have* made the payment **will have access**.
 ![final](https://user-images.githubusercontent.com/17494745/209818299-f9a1a197-6ef8-4e2e-b1be-960b6df88d1b.gif)
 
 
-
-# todo
-ver todo no checkout_session_controller.ex
-remove swoosh, mailer, postgres, ecto
-
 # Thanks!
 
 Thanks for learning about payment processing with us!
