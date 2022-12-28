@@ -10,8 +10,6 @@ defmodule App.Application do
     children = [
       # Start the Telemetry supervisor
       AppWeb.Telemetry,
-      # Start the Ecto repository
-      App.Repo,
       # Start the PubSub system
       {Phoenix.PubSub, name: App.PubSub},
       # Start Finch
