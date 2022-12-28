@@ -1156,10 +1156,6 @@ defmodule UsersTable do
     end
   end
 
-  def list_users do
-    Pockets.to_map(@table)
-  end
-
   def create_user(%{:stripe_id => stripe_id, :person_id => person_id, :status => status}) do
     Pockets.put(@table, person_id, %{stripe_id: stripe_id, status: status})
   end
@@ -1182,7 +1178,6 @@ All the functions being used are used
 according to the [`ets` wrapper documentation](https://github.com/TheFirstAvenger/ets).
 - the `init/0` function creates the table to store our users.
 If the file already exists, we open the file.
-- `list_users` returns the list of users.
 - `create_user/3` receives a `stripe_id`, `person_id` and `status` 
 (pertaining to whether the payment has been made or not)
 and creates a user object.

@@ -74,3 +74,4 @@ npm-debug.log
 # Env files
 .env
 cache.dets
+cache_test.dets

@@ -9,7 +9,15 @@ defmodule App.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [
+        c: :test,
+        coveralls: :test,
+        "coveralls.json": :test,
+        "coveralls.html": :test,
+        t: :test
+      ]
     ]
   end
 
@@ -48,6 +56,9 @@ defmodule App.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
 
+      # Tracking test coverage
+      {:excoveralls, "~> 0.15.1", only: [:test, :dev]},
+
       # Auth
       {:auth_plug, "~> 1.5.1"},
 
@@ -69,8 +80,10 @@ defmodule App.MixProject do
   defp aliases do
     [
       setup: ["deps.get"],
-      test: ["test"],
-      "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"]
+      "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"],
+      t: ["test"],
+      c: ["coveralls.html"],
+      s: ["phx.server"]
     ]
   end
 end
