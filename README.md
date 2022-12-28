@@ -1202,8 +1202,97 @@ inside `start/1`.
 UsersTable.init()
 ```
 
+We now need to **create the user** every time 
+a Stripe session is successful. 
+We can do this inside `lib/app_web/controllers/page_controller.ex`
+on the `success/2` callback.
+Change the handler, so it looks like the following:
 
-Awesome!
+```elixir
+def success(conn, %{"session_id" => session_id}) do
+
+  case Stripe.Session.retrieve(session_id) do
+    {:ok, session} ->
+
+      person_id = conn.assigns.person.id
+      UsersTable.create_user(%{person_id: person_id, stripe_id: session.customer, status: true})
+
+      render(conn, :success, layout: false)
+
+    {:error, _error} ->
+      conn
+      |> put_status(303)
+      |> redirect(to: ~p"/")
+  end
+end
+```
+
+Now, inside `lib/app_web/controllers/app_+controller.ex`,
+we will render our "dashboard"
+**only** if a user is found in our `Users` table.
+If there isn't a user found, we redirect the user to the homepage.
+Change the `home/2` function so it looks like the following.
+
+```elixir
+def home(conn, _params) do
+
+  person_id = conn.assigns.person.id
+  case UsersTable.fetch_user(person_id) do
+    nil ->
+      conn |> redirect(to: ~p"/")
+
+    _ ->
+      render(conn, :app, layout: false)
+  end
+end
+```
+
+All there's left to do 
+is to change the `Purchase` button to dynamically change.
+We want paid users to access the dashboard directly,
+and non-paid users to purchase it.
+
+To do this, add this function
+in `lib/app_web/controllers/page_html.ex`.
+
+```elixir
+  def check_user_has_paid(person_id) do
+    user = UsersTable.fetch_user(person_id)
+
+    if user == nil, do: false, else: user.status
+  end
+```
+
+Inside `lib/app_web/controllers/page_html/home.html.heex`,
+change the `Purchase` button so it changes according to the user's payment status.
+
+```html
+<%= if check_user_has_paid(@conn.assigns.person.id) do %>
+    <.link
+      href={~p"/dashboard"}
+      class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0"
+    >
+      Enter
+    </.link>
+  <% else %>
+    <.link
+      href={~p"/purchase/checkout-session"}
+      method="post"
+      class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0"
+    >
+      Purchase
+    </.link>
+  <% end %>
+```
+
+## 5. All done! 🎉
+
+And you should be done!
+The user can now pay for our product.
+We are restricting user access for only users that have paid.
+Users that *have* made the payment **will have access**.
+
+![final](https://user-images.githubusercontent.com/17494745/209818299-f9a1a197-6ef8-4e2e-b1be-960b6df88d1b.gif)
 
 
 
