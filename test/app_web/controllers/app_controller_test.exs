@@ -3,9 +3,9 @@ defmodule AppWeb.AppControllerTest do
   import App.ConnFixtures
 
   test "test dashboard with logged in user", %{conn: conn} do
-    conn = setup_conn_with_user(conn)
+    conn = setup_conn_with_user(conn, 2)
     conn = get(conn, ~p"/dashboard")
-    assert redirected_to(conn) == ~p"/"
+    assert redirected_to(conn, 302) == ~p"/"
   end
 
   test "test dashboard with logged in and paid user", %{conn: conn} do

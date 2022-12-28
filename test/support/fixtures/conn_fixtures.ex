@@ -9,7 +9,7 @@ defmodule App.ConnFixtures do
   @doc """
   Generate a connection with a logged in user.
   """
-  def setup_conn_with_user(conn) do
+  def setup_conn_with_user(conn, person_id \\ @person_id) do
     new_assigns = %{
       person: %{
         app_id: 5,
@@ -18,7 +18,7 @@ defmodule App.ConnFixtures do
         email: "test@email.com",
         exp: 1_702_132_323,
         iat: 1_670_595_323,
-        id: @person_id,
+        id: person_id,
         iss: "Joken",
         jti: "2snib63q7a9l9sfmdg00117h",
         nbf: 1_670_595_323,
@@ -41,7 +41,7 @@ defmodule App.ConnFixtures do
           picture: "this",
           auth_provider: "GitHub",
           sid: 1,
-          id: @person_id
+          id: person_id
         })
       )
 
