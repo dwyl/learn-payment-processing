@@ -15,107 +15,57 @@ and how you can add it to your application!
 # Why? 🤷
 
 Sadly, not all applications can be "free";
-The software engineers that build them need to be paid
-and the servers that host them aren't free either.
+the software engineers that build them need to be paid
+and the underlying infrastructure costs money too.
+Many Apps cover their costs through advertising.
+But this is selling the "users" data,
+which we are not fans of ...
+
+> "_When something online is free, 
+> you're not the customer, 
+> you're the product._" 
+> ~ [Jonathan Zittrain](https://blogs.harvard.edu/futureoftheinternet/2012/03/21/meme-patrol-when-something-online-is-free-youre-not-the-customer-youre-the-product/)
 
 Some apps are sold via **one time purchase**.
-Others are subscription-based.
+Others are **subscription-based**.
 Regardless of the type, 
 all of these share one thing in common:
 **they use payment processing gateways
 to collect funds**.
 
-In any current application, 
-knowing how processing payments work
-and how they can be implemented 
-is important, 
-as it affects the bottom-line
-of the project/application/company. 
-
 # What 💭
 
-Consider what happens
-when we purchase something online.
-Assume we want to buy a product online 
-e.g: 
-[Postico2](https://eggerapps.at/postico2/), 
-a PostgreSQL database editor. 
-
-<img width="1214" alt="buy-1" src="https://user-images.githubusercontent.com/17494745/209847803-5fae9197-afed-46c3-9746-5faaac73fe6f.png">
-
-If we proceed to payment, 
-we can pay with a credit card or Paypal.
-
-<img width="1214" alt="buy-3" src="https://user-images.githubusercontent.com/17494745/209847799-66c8c54e-bf16-4719-a324-2b7793e7be21.png">
-
-But how was this implemented?
-Is there any service behind this?
-For those with a keen eye, 
-you might have noticed 
-that in the upper third of the screen,
-it seems that this transaction
-is being handled by 
-[`MyCommerce.com`](https://www.mycommerce.com/).
-
-`MyCommerce.com` can be described as a
-*payment infrastructure provider*
-that takes care of transactions 
-and payments made by the users of your application
-and facilitates integrating payments to your application.
-By using these types of services,
-it is much easier for *us* developers
-to provide different ways of users to pay
-and integrate payments *seamlessly* in our applications.
-
-But, as you may be aware, 
-there are several other Payment processing providers,
-such as 
+There are several Payment processing providers,
+the most recognisable are: 
 [`PayPal`](https://developer.paypal.com/api/rest/),
 [`Stripe`](https://stripe.com)
 or 
 [`Square`](https://squareup.com/us/en/).
 
 
-## How Payment Works
+## Payment Processor or Gateway 🤷‍♀️
 
-Let's start with an analogy.
-Imagine you want to send a parcel to someone.
-1. You first drop it in a DHL (or UPS) drop-off point.
-2. DHL collects the package and transports the parcel.
-3. Once the delivery is complete, 
-a confirmation e-mail is sent to you and the recipient.
+![payment-processor-gateway](https://user-images.githubusercontent.com/17494745/208946952-4da1600e-9936-4491-9a6e-a5a7e09c023c.png)
 
-Think of the DHL distribution network
-as analogous to a **payment processor**.
-And think of the drop-off point 
-as a **payment gateway**. 
-To make an online payment,
-customers create a transaction
-*via payment gateway*
-and the *payment processor facilitates communication
-between parties* and transfers funds
-into the merchant's bank account.
-
-<img width="1278" alt="gateway_v_processor" src="https://user-images.githubusercontent.com/17494745/208946952-4da1600e-9936-4491-9a6e-a5a7e09c023c.png">
-
-So, a **payment processor** functions as an intermediary
-between the customer's party 
-(which consists of the buyer and their bank)
+A **payment processor** functions as an intermediary
+between the customer's bank (or digital wallet)
 and the merchant
 (which consists of the merchant and their bank).
 It is the entity responsible for communicating
 between both parties in the transaction.
 
-Meanwhile, the **payment gateway**
-is a *point of sale* for online payments.
-Similarly to when a customer swipes their card
-on a physical credit card terminal,
+A **payment gateway**
+is a virtual
+[*point of sale*](https://en.wikipedia.org/wiki/Point_of_sale)
+for online payments.
+Similar to when a customer swipes/taps their card
+on a **_physical_ credit card terminal**,
 online stores need a gateway to securely collect
-the customer's payment information. 
-So *payment gateway is a virtual terminal,
-and functions as a point of sale*.
+the customer's card details. 
+A payment gateway 
+acts like is a _virtual_ credit card terminal.
 
-This whole process of online payment
+The whole process of online payment
 usually assumes the merchant
 has a 
 [**merchant account**](https://www.investopedia.com/terms/m/merchant-account.asp).
@@ -123,38 +73,45 @@ A merchant account is simply
 a type of business bank account
 that *allows a business
 to receive credit card 
-and electronic transactions*.
+and other electronic funds transfers*.
 
-> **Note**: the terms `"payment processor"` and `"payment gateway"` 
-usually fall under the same term - `payment processor`. 
+> **Note**: the terms 
+> `payment processor` 
+> and `payment gateway` 
+> usually fall under the same term;
+`payment processor`. 
 This is because they work together to handle payment processing. 
 So if you see platforms like `Stripe` 
 being mentioned as a "payment processor",
-it's because it offers both `payment gateway` and `payment processor` 
-bundled together (alongside a myriad of other features).
+it's because it offers both `payment gateway` 
+and `payment processor` 
+bundled together 
+alongside a myriad of other features such as fraud prevention.
 
-## Okay... I've seen people using `Paddle`. Is it any different?
+## `PayPal` The Original Payment Processor
+Okay... I've seen people using `Paddle`. Is it any different?
 
-If you've done online shopping before,
-you probably came across a button like this,
-which allowed you to purchase the item through Paypal.
+If you've done much online shopping,
+you have probably came across a button like this,
+which allows you to purchase the item through `Paypal`:
 
 ![paypal](https://user-images.githubusercontent.com/17494745/208951049-421e123a-e082-433e-8b08-60c7da8c8a57.png)
 
-If you wanted to add a way for users to purchase
-an item in your application through Paypal,
-you'd have to setup a Paypal account
-and use [one of their SDKs](https://developer.paypal.com/home)
-to make it possible for customers to buy
-through Paypal.
+If you want to add a way for `people` to purchase
+an item in your application through `PayPal`,
+you'd have to setup a `PayPal` account
+and use one of their SDKs:
+[developer.paypal.com](https://developer.paypal.com/home)
 
-You are basically using the [Paypal E-commerce platform](https://www.paypal.com/us/business/platforms-and-marketplaces)
+You are basically using the 
+`PayPal` E-commerce platform
+[paypal.com/us/business/platforms](https://www.paypal.com/us/business/platforms-and-marketplaces)
 to setup a payment gateway and processor
 for users to pay with Paypal on your site.
 
 Awesome! 🎉
 
-Let's say you now want to add 
+Now want to add 
 [`Google Pay`](https://pay.google.com/about/business/implementation/), 
 as a payment method, as well.
 You'd have to create an account,
