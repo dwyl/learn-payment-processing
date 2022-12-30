@@ -14,35 +14,34 @@ and how you can add it to your application!
 
 # Why? 🤷
 
-Not all applications are free.
-There are some that can be acquired through
-a [one time purchase](https://git-fork.com/buy).
-There are others
-that are [subscription-based](https://www.crunchyroll.com/welcome).
-Regardless of the type, all of these share one thing in common:
-**they use payment processing platforms/gateways
-to manage transactions**.
+Sadly, not all applications can be "free";
+The software engineers that build them need to be paid
+and the servers that host them aren't free either.
+
+Some apps are sold via **one time purchase**.
+Others are subscription-based.
+Regardless of the type, 
+all of these share one thing in common:
+**they use payment processing gateways
+to collect funds**.
 
 In any current application, 
-knowing how processing payments *work*
-and how they *can* be implemented 
+knowing how processing payments work
+and how they can be implemented 
 is important, 
 as it affects the bottom-line
 of the project/application/company. 
 
 # What 💭
 
-Let's think for a minute of what happens
+Consider what happens
 when we purchase something online.
-Assume we want to [buy Postico2](https://eggerapps.at/postico2/), 
+Assume we want to buy a product online 
+e.g: 
+[Postico2](https://eggerapps.at/postico2/), 
 a PostgreSQL database editor. 
 
 <img width="1214" alt="buy-1" src="https://user-images.githubusercontent.com/17494745/209847803-5fae9197-afed-46c3-9746-5faaac73fe6f.png">
-
-If we click the `Buy Postico 2` button,
-we are redirected to a page where we can buy a license.
-
-<img width="1214" alt="buy-2" src="https://user-images.githubusercontent.com/17494745/209847802-afc048d9-9fbd-42d0-8e0f-3f117a5bdeac.png">
 
 If we proceed to payment, 
 we can pay with a credit card or Paypal.
@@ -53,7 +52,7 @@ But how was this implemented?
 Is there any service behind this?
 For those with a keen eye, 
 you might have noticed 
-that in the upprt third of the screen,
+that in the upper third of the screen,
 it seems that this transaction
 is being handled by 
 [`MyCommerce.com`](https://www.mycommerce.com/).
@@ -69,24 +68,22 @@ to provide different ways of users to pay
 and integrate payments *seamlessly* in our applications.
 
 But, as you may be aware, 
-there are several other SaaS providers,
-such as [`Stripe`](https://stripe.com/en-pt)
-or [`Square`](https://squareup.com/us/en/).
-Each one of these may differ from each others. 
+there are several other Payment processing providers,
+such as 
+[`PayPal`](https://developer.paypal.com/api/rest/),
+[`Stripe`](https://stripe.com)
+or 
+[`Square`](https://squareup.com/us/en/).
 
-But we are getting ahead of ourselves.
-We need to clarify some concepts before moving forward.
 
-Ready to start? 🏁
-
-## How payment works
+## How Payment Works
 
 Let's start with an analogy.
-Imagine you want to send a parcel to your father.
+Imagine you want to send a parcel to someone.
 1. You first drop it in a DHL (or UPS) drop-off point.
-2. DHL collects the package and transports the parcel to your father.
+2. DHL collects the package and transports the parcel.
 3. Once the delivery is complete, 
-a confirmation e-mail is sent to you and your father.
+a confirmation e-mail is sent to you and the recipient.
 
 Think of the DHL distribution network
 as analogous to a **payment processor**.
@@ -103,34 +100,34 @@ into the merchant's bank account.
 
 So, a **payment processor** functions as an intermediary
 between the customer's party 
-(which consists of the user and his bank)
-and the merchant's
-(which consists of the merchant and his bank).
+(which consists of the buyer and their bank)
+and the merchant
+(which consists of the merchant and their bank).
 It is the entity responsible for communicating
 between both parties in the transaction.
 
 Meanwhile, the **payment gateway**
 is a *point of sale* for online payments.
-Similarly to when a customer swipes his card
+Similarly to when a customer swipes their card
 on a physical credit card terminal,
 online stores need a gateway to securely collect
 the customer's payment information. 
-So *payment gateway is basically a virtual terminal,
+So *payment gateway is a virtual terminal,
 and functions as a point of sale*.
 
 This whole process of online payment
 usually assumes the merchant
-has a [**merchant account**](https://www.investopedia.com/terms/m/merchant-account.asp).
+has a 
+[**merchant account**](https://www.investopedia.com/terms/m/merchant-account.asp).
 A merchant account is simply
 a type of business bank account
 that *allows a business
 to receive credit card 
 and electronic transactions*.
 
-Do note that the terms `"payment processor"` and `"payment gateway"` 
+> **Note**: the terms `"payment processor"` and `"payment gateway"` 
 usually fall under the same term - `payment processor`. 
-This is because they work together in achieving 
-the payment processing. 
+This is because they work together to handle payment processing. 
 So if you see platforms like `Stripe` 
 being mentioned as a "payment processor",
 it's because it offers both `payment gateway` and `payment processor` 
