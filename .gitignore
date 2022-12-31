@@ -75,3 +75,6 @@ npm-debug.log
 .env
 cache.dets
 cache_test.dets
+
+# Noise
+.DS_Store

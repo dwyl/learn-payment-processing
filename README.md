@@ -12,13 +12,13 @@ and how you can add it to your application!
 
 </div>
 
-# Why? 🤷
+# Why? 🤔
 
 Sadly, not all applications can be "free";
 the software engineers that build them need to be paid
 and the underlying infrastructure costs money too.
-Many Apps cover their costs through advertising.
-But this is selling the "users" data,
+Many App/Websites cover their costs through advertising.
+This is effectively selling [out] the "users" data,
 which we are not fans of ...
 
 > "_When something online is free, 
@@ -26,21 +26,29 @@ which we are not fans of ...
 > you're the product._" 
 > ~ [Jonathan Zittrain](https://blogs.harvard.edu/futureoftheinternet/2012/03/21/meme-patrol-when-something-online-is-free-youre-not-the-customer-youre-the-product/)
 
-Some apps are sold via **one time purchase**.
-Others are **subscription-based**.
-Regardless of the type, 
-all of these share one thing in common:
-**they use payment processing gateways
-to collect funds**.
+We prefer to charge a affordable fee -
+enough to cover all our costs 
+and build-out our 
+[roadmap](https://github.com/dwyl/product-roadmap) -
+and _fiercely_ guard the privacy 
+of the `people` using the App.
+
+Some Apps are sold via **one time purchase**
+others are **subscription-based** (recurring payments).
+Regardless of the type of payment, 
+they share one thing in common:
+**payment processing gateways 
+are used to collect funds**.
 
 # What 💭
 
-There are several Payment processing providers,
-the most recognisable are: 
-[`PayPal`](https://developer.paypal.com/api/rest/),
-[`Stripe`](https://stripe.com)
-or 
-[`Square`](https://squareup.com/us/en/).
+The goal of this guide is to cover 
+both the theory and _practice_ 
+of payment processing
+_and_ to showcase payment processing
+in a standalone web app. 
+
+But what _is_ "payment processing"...? 
 
 
 ## Payment Processor or Gateway 🤷‍♀️
@@ -88,34 +96,44 @@ and `payment processor`
 bundled together 
 alongside a myriad of other features such as fraud prevention.
 
-## `PayPal` The Original Payment Processor
-Okay... I've seen people using `Paddle`. Is it any different?
+## Which Payment Processing Provider?
+
+There are several Payment processing providers,
+the most recognizable are: 
+[`PayPal`](https://developer.paypal.com/api/rest/),
+[`Stripe`](https://stripe.com)
+or 
+[`Square`](https://squareup.com/us/en/).
+
+
+## `PayPal` - the _Original_ Payment Processor
+
+Over `PayPal`
 
 If you've done much online shopping,
-you have probably came across a button like this,
-which allows you to purchase the item through `Paypal`:
+you have probably came across a payment interface
+that allows you to purchase the item through `Paypal`:
 
 ![paypal](https://user-images.githubusercontent.com/17494745/208951049-421e123a-e082-433e-8b08-60c7da8c8a57.png)
 
-If you want to add a way for `people` to purchase
-an item in your application through `PayPal`,
+If you want to alow `people` to purchase
+an through `PayPal`,
 you'd have to setup a `PayPal` account
 and use one of their SDKs:
 [developer.paypal.com](https://developer.paypal.com/home)
 
-You are basically using the 
+This uses the 
 `PayPal` E-commerce platform
 [paypal.com/us/business/platforms](https://www.paypal.com/us/business/platforms-and-marketplaces)
 to setup a payment gateway and processor
 for users to pay with Paypal on your site.
 
-Awesome! 🎉
-
 Now want to add 
 [`Google Pay`](https://pay.google.com/about/business/implementation/), 
 as a payment method, as well.
 You'd have to create an account,
-use [their SDK](https://developers.google.com/pay/api)
+use their **`SDK`**:
+[developers.google.com/pay/api](https://developers.google.com/pay/api)
 and integrate it in your website.
 
 We shouldn't forget iPhone users as well!
@@ -166,34 +184,39 @@ For example, `Stripe` is like having a multiple
 bundled into one, 
 along with a [myriad of other features](https://stripe.com/en-pt).
 
-## Stripe and alternatives
+## `Stripe`
 
 `Stripe` is considered by many to be 
 the [*de facto*](https://trends.builtwith.com/payment/Stripe)
 way of accepting credit cards
 and electronic payments on the web. 
-It's a powerful payment tool 
-that has a number of additional features, 
-including [smart retries](https://stripe.com/docs/billing/revenue-recovery/smart-retries),
+Beyond collecting card payments 
+it has a number of additional features, 
+including: 
+[smart retries](https://stripe.com/docs/billing/revenue-recovery/smart-retries),
 [automatic card updater](https://stripe.com/docs/saving-cards),
 [fraud tooling](https://stripe.com/en-gb-pt/radar), 
-and [others](https://stripe.com/partners/directory). 
+and other 
+[add-ons](https://stripe.com/partners/directory). 
 
-However, it is important to note that there are
-several other options that do offer similar features,
-ease of payment integration into your application 
-but handle payments in a different way.
+Until starting to research this in-depth,
+we were considering using `Stripe`
+because we've used in previous projects.
+But then we discovered `Paddle`!
 
-For example, `Paddle`, as we have mentioned earlier,
-works on a completely different way.
+## `Paddle`
+
+`Paddle` is a new class of payment processor
+that includes all additional services in their simple fee structure.
 While `Stripe` can be compared to a payment gateway
 that deals with multiple channels, 
 `Paddle` offers similar features
-but acts a *reseller of your services* - 
-**merchant of record (MoR)**.
+but acts a *reseller service* - 
+**Merchant of Record (MoR)**.
 
-A MoR is ["a term to describe the legal entity
-selling goods or services to an end customer"](https://www.paddle.com/blog/what-is-merchant-of-record).
+A MoR is a term to describe the legal entity
+selling goods or services to an end customer.
+~ [paddle.com/blog/what-is-merchant-of-record](https://www.paddle.com/blog/what-is-merchant-of-record)
 It's who the end customer owes payment for their purchase,
 and it is who handles payments and liability for each transaction.
 This is great for *tax handling*, 
