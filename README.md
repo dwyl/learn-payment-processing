@@ -21,24 +21,20 @@ Many App/Websites cover their costs through advertising.
 This is effectively selling [out] the "users" data,
 which we are not fans of ...
 
+[![you-are-the-product](https://user-images.githubusercontent.com/194400/210129020-c3fe00a5-5721-448b-a919-7b9c89ba2fae.png "You Are the Product!")](https://slate.com/technology/2018/04/are-you-really-facebooks-product-the-history-of-a-dangerous-idea.html)
+
 > "_When something online is free, 
 > you're not the customer, 
 > you're the product._" 
 > ~ [Jonathan Zittrain](https://blogs.harvard.edu/futureoftheinternet/2012/03/21/meme-patrol-when-something-online-is-free-youre-not-the-customer-youre-the-product/)
 
-We prefer to charge a affordable fee -
+We prefer to charge an affordable fee -
 enough to cover all our costs 
-and build-out our 
+and continue building our 
 [roadmap](https://github.com/dwyl/product-roadmap) -
 and _fiercely_ guard the privacy 
 of the `people` using the App.
 
-Some Apps are sold via **one time purchase**
-others are **subscription-based** (recurring payments).
-Regardless of the type of payment, 
-they share one thing in common:
-**payment processing gateways 
-are used to collect funds**.
 
 # What 💭
 
@@ -47,6 +43,13 @@ both the theory and _practice_
 of payment processing
 _and_ to showcase payment processing
 in a standalone web app. 
+
+Some Apps are sold via **one time purchase**
+others are **subscription-based** (recurring payments).
+Regardless of the type of payment, 
+they share one thing in common:
+**payment processing gateways 
+are used to collect funds**.
 
 But what _is_ "payment processing"...? 
 
@@ -58,7 +61,7 @@ But what _is_ "payment processing"...?
 A **payment processor** functions as an intermediary
 between the customer's bank (or digital wallet)
 and the merchant
-(which consists of the merchant and their bank).
+(and their bank).
 It is the entity responsible for communicating
 between both parties in the transaction.
 
@@ -94,7 +97,8 @@ being mentioned as a "payment processor",
 it's because it offers both `payment gateway` 
 and `payment processor` 
 bundled together 
-alongside a myriad of other features such as fraud prevention.
+alongside a myriad of other features 
+such as fraud prevention.
 
 ## Which Payment Processing Provider?
 
@@ -103,16 +107,23 @@ the most recognizable are:
 [`PayPal`](https://developer.paypal.com/api/rest/),
 [`Stripe`](https://stripe.com)
 or 
-[`Square`](https://squareup.com/us/en/).
+[`Square`](https://developer.squareup.com/us/en).
+
+We have used each of these in the past 
+and they are fairly straightforward to integrate.
+
 
 
 ## `PayPal` - the _Original_ Payment Processor
 
-Over `PayPal`
+Started in 1998, 
+`PayPal` is one of the _original_
+and most successful
+general purpose online payment processors.
 
 If you've done much online shopping,
-you have probably came across a payment interface
-that allows you to purchase the item through `Paypal`:
+you have probably seen a payment interface
+allowing purchases through `Paypal`:
 
 ![paypal](https://user-images.githubusercontent.com/17494745/208951049-421e123a-e082-433e-8b08-60c7da8c8a57.png)
 
@@ -128,42 +139,97 @@ This uses the
 to setup a payment gateway and processor
 for users to pay with Paypal on your site.
 
-Now want to add 
+The history/evolution of `PayPal` is a fascinating success story,
+[wikipedia.org/wiki/PayPal#Early_history](https://en.wikipedia.org/wiki/PayPal).
+We are only concerned about the _present_;
+`PayPal` has over **`400 million` actively using their platform** 
+and can be used in more than 200 countries/regions.
+A _significant_ proportion of `people` buying things online
+_already_ use and _trust_ `PayPal`.
+We want to offer the ability to checkout with a `PayPal`
+account as one of the lowest friction payment methods.
+
+
+## `Apple Pay`
+
+There are **`1.2 Billion` _active_ `iPhone`** users worldwide.
+`iPhone` recently surpassed 
+[**`50%` Smart Phone Market Share**](https://github.com/dwyl/learn-flutter/pull/69#issuecomment-1319811970)
+in the **US**
+and in some wealthier countries like Norway,
+it's as high as 
+[**`68%`**](https://github.com/dwyl/learn-flutter/pull/69#issuecomment-1319826473).
+Many of the `people` using `iPhone`
+have a payment card associated with their Apple Account.
+[**`Apple Pay`**](https://www.apple.com/apple-pay/)
+has **`500 million`** registered users worldwide:
+[fortunly.com/apple-pay-statistics](https://fortunly.com/statistics/apple-pay-statistics/)
+
+To use `Apple Pay` _directly_ we would need
+to create an account with `Apple`
+and use their `SDK`:
+[developer.apple.com/apple-pay/implementation/](https://developer.apple.com/apple-pay/implementation/)
+
+`while` we don't expect _many_ of the people using our `App` to pay with `Apple Pay`
+(_and we certainly won't encourage them as `Apple` takes a **massive `30%` cut** ..._)
+
+## `Google Pay`
+
 [`Google Pay`](https://pay.google.com/about/business/implementation/), 
-as a payment method, as well.
-You'd have to create an account,
-use their **`SDK`**:
+originally called `Google Checkout`,
+then `Google Wallet` 
+then rebranded to `Android Pay` 
+and now back to `Google Pay/Wallet` (...🙄)
+is a payment service available 
+to all `people` with an `Google` account -
+including everyone with an `Android` device -
+who have added a credit/debit card to their account.
+It's difficult to know exactly how many people
+have and _use_ `Google Pay` 
+because `Google` does not make the info `public`
+and the _vast_ majority of `people` with an `Android`
+device either don't _have_ a Credit Card
+(think children and the 
+[unbanked](https://en.wikipedia.org/wiki/Unbanked)) ...
+But the most recent estimates are 
+**`200 million` people**
+in 
+[**47 countries**](https://support.google.com/googlepay/answer/12429287?hl=en#zippy=%2Cpay-in-store).
+see: wikipedia.org/wiki/Google_Pay_(payment_method)
+
+
+To add `Google Pay`
+as a payment method 
+you have to create an business account 
+and use their **`SDK`**:
 [developers.google.com/pay/api](https://developers.google.com/pay/api)
-and integrate it in your website.
+and integrate it in your App/Website.
 
-We shouldn't forget iPhone users as well!
-We also want (need!) to add an [`Apple Pay`](https://www.apple.com/apple-pay/)
-payment method to our application.
-Same procedure occurs, we ought to create an account
-and use [their SDK](https://developer.apple.com/apple-pay/implementation/)
-to integrate it into our application.
+## Merchant Account? 🤷‍♀️
 
-On top of this, we need to create our own merchant account
+On top of managing accounts with each of the payment providers,
+we would need to create our own merchant account
 so each one of these services can connect to it
 and process the transactions.
 
 This is a heap of effort 
 and can easily scale to unsustainable levels.
 This is where **payment platforms** 
-like Stripe come into play.
+like `Stripe` come into play.
 
-## Payment platforms
+## Payment Platforms
 
 Payment platforms **simplify the process of connecting
 to multiple third-parties**. 
 It offers more than a payment service 
-so that merchants only have to liaise with one company 
+so that merchants only have to liaise with _one_ company 
 rather than multiple ones. 
 
 This has a great impact on how an application
 is *designed* and *implemented*, 
 and allows to for a better management
-and [decoupling](https://en.wikipedia.org/wiki/Single-responsibility_principle)
+and 
+[decoupling](https://en.wikipedia.org/wiki/Single-responsibility_principle)
 of responsibilities.
 
 Instead of our own API having to manage different providers, 
@@ -227,7 +293,7 @@ and one of the reasons people
 [better tax compliance](https://stripe.com/newsroom/news/taxjar)
 but it's not quite there, at the moment of writing.
 
-![mor](https://images.prismic.io/paddle/d6ff57bb-31dd-41ed-86c6-23d73584b617_merchant+of+record.png?auto=format&fit=crop&ixlib=react-9.5.4)
+![mor](https://user-images.githubusercontent.com/194400/210158068-92f2ec93-c108-4789-bc03-fd9b34c472bf.png)
 
 So businesses can choose to be their own merchant of record
 and setup an infrastructure and processes needed to manage
