@@ -1,6 +1,6 @@
 <div align="center">
 
-# Learn Payment Processing
+# Learn Payment Processing 💳
 
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/dwyl/learn-payment-processing/ci.yml?label=build&style=flat-square&branch=main)
 [![codecov.io](https://img.shields.io/codecov/c/github/dwyl/learn-payment-processing/main.svg?style=flat-square)](https://codecov.io/github/dwyl/phoenix-chat-example?branch=main)
@@ -12,14 +12,16 @@ and how you can add it to your application!
 
 </div>
 
-# Why? 🤔
+# Why? 🥕
 
 Sadly, not all applications can be "free";
 the software engineers that build them need to be paid
 and the underlying infrastructure costs money too.
 Many App/Websites cover their costs through advertising.
 This is effectively selling [out] the "users" data,
-which we are not fans of ...
+which we are 
+[not fans](https://github.com/dwyl/learn-react/issues/23#issuecomment-552212087) 
+of ...
 
 [![you-are-the-product](https://user-images.githubusercontent.com/194400/210129020-c3fe00a5-5721-448b-a919-7b9c89ba2fae.png "You Are the Product!")](https://slate.com/technology/2018/04/are-you-really-facebooks-product-the-history-of-a-dangerous-idea.html)
 
@@ -34,6 +36,16 @@ and continue building our
 [roadmap](https://github.com/dwyl/product-roadmap) -
 and _fiercely_ guard the privacy 
 of the `people` using the App.
+
+# Who? 🤓
+
+This guide is meant as both an **_internal_ reference** fo us **`@dwyl`**
+and a _fully_ Open Source resource that _anyone_ can read and learn from.
+
+As always, if you find it helpful/useful please ⭐ 🙏 Thanks!
+
+If you get stuck or have any questions/suggestions,
+please [open an issue](https://github.com/dwyl/learn-payment-processing/issues)
 
 
 # What 💭
@@ -100,7 +112,7 @@ bundled together
 alongside a myriad of other features 
 such as fraud prevention.
 
-## Which Payment Processing Provider?
+## Which Payment Processing Provider? 🤔
 
 There are several Payment processing providers,
 the most recognizable are: 
@@ -112,9 +124,10 @@ or
 We have used each of these in the past 
 and they are fairly straightforward to integrate.
 
+Let's do a quick rundown of the various payment providers
+we want to support in our `App`:
 
-
-## `PayPal` - the _Original_ Payment Processor
+## `PayPal` - the _Original_ Payment Processor 💵
 
 Started in 1998, 
 `PayPal` is one of the _original_
@@ -137,7 +150,17 @@ This uses the
 `PayPal` E-commerce platform
 [paypal.com/us/business/platforms](https://www.paypal.com/us/business/platforms-and-marketplaces)
 to setup a payment gateway and processor
-for users to pay with Paypal on your site.
+for `people` to pay with Paypal on your site.
+
+The biggest advantage of `PayPal` 
+is that has been a "Digital Wallet" from the early days.
+Which means people _store_ funds in their `PayPal` account
+as if it were a Bank.
+An individual can _sell_ something online 
+e.g. on 
+[`eBay`]()
+or 
+[`etsy`](https://help.etsy.com/hc/en-us/articles/360000104828-How-to-Pay-With-PayPal?segment=shopping)
 
 The history/evolution of `PayPal` is a fascinating success story,
 [wikipedia.org/wiki/PayPal#Early_history](https://en.wikipedia.org/wiki/PayPal).
@@ -150,7 +173,7 @@ We want to offer the ability to checkout with a `PayPal`
 account as one of the lowest friction payment methods.
 
 
-## `Apple Pay`
+## `Apple Pay` 🍎
 
 There are **`1.2 Billion` _active_ `iPhone`** users worldwide.
 `iPhone` recently surpassed 
@@ -173,7 +196,7 @@ and use their `SDK`:
 `while` we don't expect _many_ of the people using our `App` to pay with `Apple Pay`
 (_and we certainly won't encourage them as `Apple` takes a **massive `30%` cut** ..._)
 
-## `Google Pay`
+## `Google Pay` 🤖
 
 [`Google Pay`](https://pay.google.com/about/business/implementation/), 
 originally called `Google Checkout`,
@@ -197,13 +220,35 @@ in
 [**47 countries**](https://support.google.com/googlepay/answer/12429287?hl=en#zippy=%2Cpay-in-store).
 see: wikipedia.org/wiki/Google_Pay_(payment_method)
 
-
 To add `Google Pay`
 as a payment method 
 you have to create an business account 
 and use their **`SDK`**:
 [developers.google.com/pay/api](https://developers.google.com/pay/api)
 and integrate it in your App/Website.
+
+## Credit/Debit Cards 💳
+
+Last but not least are **`credit/debit cards`**, 
+by _far_ the most prevalent payment method
+both in the _real_ world and online.
+
+All the bran-specific payment providers
+such as `Apple Pay`, `Google Pay`, `Amazon Pay` etc.
+_assume_ you have a `credit/debit card`,
+so why _bother_ with the others?
+Simple: most friction and _perceived_ security.
+Many people are _reluctant_ to use their credit/debit card
+because they fear fraud or identity theft.
+
+These fears are _mostly_ resolved in 2022
+as the credit/debit card companies have
+sophisticated fraud detection/prevention systems.
+But we [@dwyl] still don't want to be _storing_ 
+any card details ourselves, we want a trusted 
+[PCI DSS compliant](https://en.wikipedia.org/wiki/Payment_Card_Industry_Data_Security_Standard)
+payment processor to handle the parts we don't have time to be experts in
+so that we can focus on the UI/UX of our `App`.
 
 ## Merchant Account? 🤷‍♀️
 
@@ -212,14 +257,19 @@ we would need to create our own merchant account
 so each one of these services can connect to it
 and process the transactions.
 
-This is a heap of effort 
-and can easily scale to unsustainable levels.
+Setting up and maintaining a Merchant Account 
+is a heap of effort 
+and can easily require
+a _dedicated_ person or _team_ of people
+just for running the checkout process in your App/company.
 This is where **payment platforms** 
 like `Stripe` come into play.
+ 
 
-## Payment Platforms
 
-Payment platforms **simplify the process of connecting
+## Payment Platforms 😍
+
+Payment platforms **_simplify_ the process of connecting
 to multiple third-parties**. 
 It offers more than a payment service 
 so that merchants only have to liaise with _one_ company 
@@ -250,7 +300,7 @@ For example, `Stripe` is like having a multiple
 bundled into one, 
 along with a [myriad of other features](https://stripe.com/en-pt).
 
-## `Stripe`
+## `Stripe` 🚀
 
 `Stripe` is considered by many to be 
 the [*de facto*](https://trends.builtwith.com/payment/Stripe)
@@ -270,10 +320,13 @@ we were considering using `Stripe`
 because we've used in previous projects.
 But then we discovered `Paddle`!
 
-## `Paddle`
+## `Paddle` 😮
 
 `Paddle` is a new class of payment processor
 that includes all additional services in their simple fee structure.
+Their slogan is "_The better way to sell software_".
+Which immediately got our attention as that is what we are selling! 
+
 While `Stripe` can be compared to a payment gateway
 that deals with multiple channels, 
 `Paddle` offers similar features
@@ -303,7 +356,7 @@ and tax handling themselves.
 who take the burden of all of payment processing 
 and legal compliance away. Of course, these usually incur higher fees than `Stripe`.
 
-## I'm confused. Which one should I choose?
+## I'm confused. Which one should I choose? 🤷‍♀️
 
 [That's a great question](https://www.indiehackers.com/post/stripe-vs-paddle-89161b0d5c).
 
@@ -361,7 +414,7 @@ is because `Stripe` allows us to create an account
 without having to fill business-related information,
 KYC and a company website.
 
-## Pre-requisites
+## Pre-requisites 📝
 
 For this tutorial,
 you will need to create a `Stripe` account.
