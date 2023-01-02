@@ -5,7 +5,7 @@
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/dwyl/learn-payment-processing/ci.yml?label=build&style=flat-square&branch=main)
 [![codecov.io](https://img.shields.io/codecov/c/github/dwyl/learn-payment-processing/main.svg?style=flat-square)](https://codecov.io/github/dwyl/phoenix-chat-example?branch=main)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/dwyl/phoenix-chat-example/issues)  
-[![HitCount](https://hits.dwyl.com/dwyl/learn-payment-processing.svg?style=flat-square&show=unique)](http://hits.dwyl.com/dwyl/learn-payment-processing)
+[![HitCount](https://hits.dwyl.com/dwyl/learn-payment-processing.svg?style=flat-square)](http://hits.dwyl.com/dwyl/learn-payment-processing)
   
 Learn what payment processing is 
 and how you can add it to your App
@@ -38,24 +38,24 @@ and continue building our
 and _fiercely_ guard the privacy 
 of the `people` using the App.
 
+The goal of this guide is to cover 
+both the theory and _practice_ 
+of payment processing
+_and_ to showcase payment processing
+in a standalone web app. 
+
 # Who? 🤓
 
 This guide is meant as both an **_internal_ reference** fo us **`@dwyl`** <br />
 and a _fully_ Open Source resource that _anyone_ can read and learn from.
 
-As always, if you find it helpful/useful please ⭐ 🙏 Thanks!
+As always, if you find it helpful/useful please star the repo on GitHub ⭐ 🙏 Thanks!
 
 If you get stuck or have any questions/suggestions,
 please [open an issue](https://github.com/dwyl/learn-payment-processing/issues).
 
 
 # What 💭
-
-The goal of this guide is to cover 
-both the theory and _practice_ 
-of payment processing
-_and_ to showcase payment processing
-in a standalone web app. 
 
 Some Apps are sold via **one time purchase**
 others are **subscription-based** (recurring payments).
@@ -67,7 +67,7 @@ are used to collect funds**.
 But what _is_ "payment processing"...? 
 
 
-## Payment Processor or Gateway 🤷‍♀️
+## Payment Processor or Gateway? 🤷‍♀️
 
 ![payment-processor-gateway](https://user-images.githubusercontent.com/17494745/208946952-4da1600e-9936-4491-9a6e-a5a7e09c023c.png)
 
@@ -128,7 +128,7 @@ and they are fairly straightforward to integrate.
 Let's do a quick rundown of the various payment providers
 we want to support in our `App`:
 
-## `PayPal` - the _Original_ Payment Processor 💵
+### `PayPal` - the _Original_ Payment Processor 💵
 
 Started in 1998, 
 `PayPal` is one of the _original_
@@ -162,6 +162,11 @@ e.g. on
 [`eBay`](https://www.ebay.com/help/selling/listings/choosing-get-paid/accepting-other-payment-methods?id=4184)
 or 
 [`etsy`](https://help.etsy.com/hc/en-us/articles/360000104828-How-to-Pay-With-PayPal?segment=shopping)
+and collect payment with `PayPal`.
+These funds stay in their `PayPal` account unless they extract them
+to a Bank Account. Many people hold balances in their `PayPal` for future online shopping.
+People consider this to be their "spending money". 
+We want to help those people _invest_ the money wisely in themselves! 
 
 The history/evolution of `PayPal` is a fascinating success story,
 [wikipedia.org/wiki/PayPal#Early_history](https://en.wikipedia.org/wiki/PayPal).
@@ -176,7 +181,7 @@ For people who are signed into their `PayPal` account,
 checkout can be **2 clicks/taps**. 🚀
 
 
-## `Apple Pay` 🍎
+### `Apple Pay` 🍎
 
 There are **`1.2 Billion` _active_ `iPhone`** users worldwide.
 `iPhone` recently surpassed 
@@ -199,7 +204,7 @@ and use their `SDK`:
 `while` we don't expect _many_ of the people using our `App` to pay with `Apple Pay`
 (_and we certainly won't encourage them as `Apple` takes a **massive `30%` cut** ..._)
 
-## `Google Pay` 🤖
+### `Google Pay` 🤖
 
 [`Google Pay`](https://pay.google.com/about/business/implementation/), 
 originally called `Google Checkout`,
@@ -230,7 +235,7 @@ and use their **`SDK`**:
 [developers.google.com/pay/api](https://developers.google.com/pay/api)
 and integrate it in your App/Website.
 
-## Credit/Debit Cards 💳
+### Credit/Debit Cards 💳
 
 Last but not least are **`credit/debit cards`**, 
 by _far_ the most prevalent payment method
@@ -253,7 +258,9 @@ any card details ourselves, we want a trusted
 payment processor to handle the parts we don't have time to be experts in
 so that we can focus on the UI/UX of our `App`.
 
-## Merchant Account? 🛒
+<br />
+
+## Do We Need a Merchant Account? 🛒
 
 On top of managing accounts with each of the payment providers,
 we would need to create our own merchant account
@@ -303,7 +310,7 @@ For example, `Stripe` is like having a multiple
 bundled into one, 
 along with a [myriad of other features](https://stripe.com/en-pt).
 
-## `Stripe` 🚀
+### `Stripe` 🚀
 
 `Stripe` is considered by many to be 
 the [*de facto*](https://trends.builtwith.com/payment/Stripe)
@@ -323,7 +330,7 @@ we were considering using `Stripe`
 because we've used in it previous projects.
 But then we discovered ***`Paddle`***!
 
-## `Paddle` 😮
+### `Paddle` 😮
 
 `Paddle` is a new class of payment processor
 that includes all additional services 
@@ -416,4 +423,4 @@ we are going to be doing that in the next section!
 
 The demo/example has quite a few steps,
 so we split it out into it's own doc:
-
+[`example.md`](https://github.com/dwyl/learn-payment-processing/blob/main/example.md)

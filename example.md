@@ -1,27 +1,25 @@
 
-# Let's Build! 💻
+# Let's Build! 👩‍💻
 
 In this section, 
-we are going to be implementing an example application
+we are going to implement an example application
 using `Stripe` with `Elixir`.
 
 
-
-> If you have never programmed in `Elixir`,
-we recommend checking the 
+> If you are new to `Elixir`,
+we recommend reading 
 [`learn-elixir`](https://github.com/dwyl/learn-elixir) 
 and [`learn-phoenix-framework`](https://github.com/dwyl/learn-phoenix-framework)
-repositories before you start this walk-through,
-as we are going to be focusing on payment processing,
+***`before`*** you start this walk-through,
+as focus on payment processing
 and not on the basics of a `Phoenix` project. 
 
-The reason we went with `Stripe` 
+> **Note**: The reason we went with `Stripe` 
 and not any other alternative like `Paddle` 
-is because `Stripe` allows us to create an account
+is because `Stripe` allows us to create a Developer account
 without having to fill business-related information,
-KYC and a company website.
-
-We are going to see how far we can get with `Stripe`
+KYC and a company website. <br />
+> We are going to see how far we can get with `Stripe`
 and document the process.
 If we decide we _need_ the features/simplicity 
 offered by `Paddle` we will switch and document that too.
@@ -30,8 +28,9 @@ offered by `Paddle` we will switch and document that too.
 
 For this tutorial,
 you will need to create a `Stripe` account.
-If you visit https://dashboard.stripe.com/register,
-you will be prompted to create an account.
+Visit: 
+[stripe.com/register](https://dashboard.stripe.com/register)
+to create an account.
 
 <img width="1345" alt="stripe-create" src="https://user-images.githubusercontent.com/17494745/208978760-84f42dfd-7eee-4363-b250-6dcca0ee90b7.png">
 
@@ -52,7 +51,7 @@ Save them and don't show them to anyone else!
 We are going to be using these
 as [environment variables](https://github.com/dwyl/learn-environment-variables).
 
-Make sure you also have 
+Ensure you have 
 [`Elixir`](https://elixir-lang.org/)
 and [`Phoenix 1.7rc`](https://www.phoenixframework.org/)
 installed.
@@ -1001,3 +1000,5 @@ If you are using environment variables in a way not mentioned in this guide,
 or have a better way of managing them 
 or any other ideas or suggestions for improvements 
 please tell us!!
+
+[![HitCount](https://hits.dwyl.com/dwyl/learn-payment-processing-example.svg?style=flat-square)](http://hits.dwyl.com/dwyl/learn-payment-processing)
