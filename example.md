@@ -63,6 +63,7 @@ Or navigate directly to it:
 ![stripe-test-api-keys](https://user-images.githubusercontent.com/194400/211688826-429d2905-49f9-4974-8654-08b3607b43f5.png)
 
 > **Note**: don't worry, these `API Keys` aren't valid. 
+> This is just for illustration purposes.
 
 The **_Test_ API keys** will be used later.
 Save them and don't share them with anyone.
@@ -90,8 +91,8 @@ you will be able to see the default landing page.
 We want the `person` using the `App` to be able to log in.
 We will check if they have *paid* or not
 for using the `App`. 
-If he hasn't, he is redirected to a `buy` page.
-If he has, he will have access to it!
+If they haven't, they are redirected to a `buy` page.
+If they have, they will have access to it!
 
 It's a simple `App`, for sure.
 But it's still important 

@@ -6,12 +6,15 @@ defmodule AppWeb.PageController do
   end
 
   def success(conn, %{"session_id" => session_id}) do
-
     case Stripe.Session.retrieve(session_id) do
       {:ok, session} ->
-
         person_id = conn.assigns.person.id
-        UsersTable.create_user(%{person_id: person_id, stripe_id: session.customer, status: true})
+
+        UsersTable.create_user(%{
+          person_id: person_id,
+          stripe_id: session.customer,
+          status: true
+        })
 
         render(conn, :success, layout: false)
 
@@ -29,7 +32,6 @@ defmodule AppWeb.PageController do
   end
 
   def cancel(conn, %{"session_id" => session_id}) do
-
     case Stripe.Session.retrieve(session_id) do
       {:ok, _session} ->
         render(conn, :cancel, layout: false)

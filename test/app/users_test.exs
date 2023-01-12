@@ -1,5 +1,4 @@
 defmodule App.UsersTest do
-
   use ExUnit.Case
 
   # "Cache_test.dets" has one user

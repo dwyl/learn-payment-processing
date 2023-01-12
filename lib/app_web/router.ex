@@ -21,7 +21,6 @@ defmodule AppWeb.Router do
 
     get "/login", AuthController, :login
     get "/logout", AuthController, :logout
-
   end
 
   scope "/purchase", AppWeb do
@@ -33,7 +32,6 @@ defmodule AppWeb.Router do
     get "/success", PageController, :success
     get "/cancel", PageController, :cancel
   end
-
 
   scope "/dashboard", AppWeb do
     pipe_through :browser

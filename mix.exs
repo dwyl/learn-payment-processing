@@ -70,7 +70,6 @@ defmodule App.MixProject do
 
       # Mocking for testing
       {:mock, "~> 0.3.0", only: :test}
-
     ]
   end
 
@@ -83,7 +82,11 @@ defmodule App.MixProject do
   defp aliases do
     [
       setup: ["deps.get"],
-      "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"],
+      "assets.deploy": [
+        "tailwind default --minify",
+        "esbuild default --minify",
+        "phx.digest"
+      ],
       t: ["test"],
       c: ["coveralls.html"],
       s: ["phx.server"]

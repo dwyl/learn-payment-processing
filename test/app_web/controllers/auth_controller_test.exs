@@ -1,5 +1,3 @@
-
-
 defmodule AppWeb.AuthControllerTest do
   use AppWeb.ConnCase, async: true
 
