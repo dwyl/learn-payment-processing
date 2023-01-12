@@ -255,7 +255,7 @@ and access `/dashboard` directly,
 you will be redirected to a page 
 where you can SSO using `Google` or `Github`.
 
-<img width="1345" alt="redirection" src="https://user-images.githubusercontent.com/17494745/209158781-5242b18f-9abb-4c0c-8703-5be7ed9509f7.png">
+![redirect-to-auth](https://user-images.githubusercontent.com/194400/212059730-91137e3a-9a34-43e1-9cbe-9732511adcbd.png)
 
 After logging in, 
 the user has access to the URL!
@@ -441,6 +441,12 @@ that will allows us to communicate with **Stripe**.
 We are going to be using 
 [`stripity-stripe`](https://github.com/beam-community/stripity-stripe).
 This library will allow us to easily integrate Stripe in our Phoenix application.
+
+The library is maintained by the `BEAM Community`,
+has 150+ contributors and is considered stable/reliable:
+
+![stripity-stripe](https://user-images.githubusercontent.com/194400/212060290-9044031a-4d6a-4127-b049-278c0543297f.png)
+
 
 Go to your `mix.exs` file
 and add this inside your dependency section.
