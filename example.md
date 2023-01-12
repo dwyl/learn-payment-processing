@@ -1,5 +1,9 @@
+<div align="center">
 
-# Let's Build! 👩‍💻
+# Let's Build! 👩‍💻 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/dwyl/learn-payment-processing/ci.yml?label=build&style=flat-square&branch=main)
+
+
+</div>
 
 In this section, 
 we are going to implement an example application
@@ -32,74 +36,107 @@ Visit:
 [stripe.com/register](https://dashboard.stripe.com/register)
 to create an account.
 
-<img width="1345" alt="stripe-create" src="https://user-images.githubusercontent.com/17494745/208978760-84f42dfd-7eee-4363-b250-6dcca0ee90b7.png">
+![stripe-register](https://user-images.githubusercontent.com/194400/211686517-6ccd95d0-1006-46d0-a4aa-6cadf01025a9.png)
 
-After filling your information,
-and verifying your account, 
-you will be able to access the main dashboard.
-If you type "API" inside the search box 
-and choose `Developers > API Keys`...
+After inputting the required `Email`, `Full name` and `Password`
+you will receive an email requiring you to **`Verify your email`**:
 
-<img width="1345" alt="dashboard" src="https://user-images.githubusercontent.com/17494745/208983008-93f34198-3d0e-4d7b-a493-ccbe87afa5b6.png">
+![stripe-verify-email](https://user-images.githubusercontent.com/194400/211687211-fbfd50c9-9df3-44fd-bd09-62e1c3982430.png)
 
-You will be prompted with the following window.
+Once you click the button,
+you will see a screen similar to this:
 
-<img width="1345" alt="keys" src="https://user-images.githubusercontent.com/17494745/208983428-c75a0df2-a088-40fe-a68c-3193c829a3a4.png">
+![activate-payments-skip](https://user-images.githubusercontent.com/194400/211686999-5a90827f-e2be-4155-9051-21b513cf9084.png)
 
-These API keys will later be used in the tutorial.
-Save them and don't show them to anyone else!
+Click on **`skip for now`** to proceed to the main dashboard:
+
+![stripe-dashboard](https://user-images.githubusercontent.com/194400/211688125-eb3aabfa-8142-49f7-b043-2b0ab4b3ab70.png)
+
+If you type "**API**" in the search box 
+and choose **`Developers > API Keys`** ...
+
+![search-api-keys](https://user-images.githubusercontent.com/194400/211688294-a16d1c2e-ec2e-46f0-b89a-5c2481a77442.png)
+
+Or navigate directly to it: 
+[dashboard.stripe.com/test/**apikeys**](https://dashboard.stripe.com/test/apikeys)
+
+![stripe-test-api-keys](https://user-images.githubusercontent.com/194400/211688826-429d2905-49f9-4974-8654-08b3607b43f5.png)
+
+> **Note**: don't worry, these `API Keys` aren't valid. 
+
+The **_Test_ API keys** will be used later.
+Save them and don't share them with anyone.
 We are going to be using these
-as [environment variables](https://github.com/dwyl/learn-environment-variables).
+as 
+[environment variables](https://github.com/dwyl/learn-environment-variables).
 
-Ensure you have 
-[`Elixir`](https://elixir-lang.org/)
-and [`Phoenix 1.7rc`](https://www.phoenixframework.org/)
-installed.
 
 ## 1. Create a Phoenix project
 
 Let's start by creating a Phoenix project.
-Run `mix phx.new app` 
+Run: 
+```sh
+mix phx.new app --no-ecto --no-mailer --no-dashboard --no-gettext
+```
 and when prompted, type `y` to accept downloading the dependencies.
 
-After this, if you run `mix phx.server`
+After this, if you run 
+`mix phx.server`
 and visit `localhost:4000`, 
 you will be able to see the default landing page.
 
 ![default](https://user-images.githubusercontent.com/17494745/209141154-a9d88988-6a36-4faa-8bbf-f1cf09684bf5.png)
 
-We will want the user to be able to log in.
-We will check if the user has *paid* or not
-for using the application. 
+We want the `person` using the `App` to be able to log in.
+We will check if they have *paid* or not
+for using the `App`. 
 If he hasn't, he is redirected to a `buy` page.
 If he has, he will have access to it!
 
-It's a simple application, for sure.
-But it's still important to know **how** to properly implement it.
+It's a simple `App`, for sure.
+But it's still important 
+to know ***how*** to properly implement it.
 
 ## 2. Add `auth_plug` for user login
 
 We will be using 
 [`auth_plug`](https://github.com/dwyl/auth_plug)
-so users are able to login.
+so `people` are able to login.
 
 Let's install it.
-Add the following to the `deps` section in `mix.exs`.
+Add the following to the `deps` section in `mix.exs`:
 
 ```elixir
 def deps do
   [
-    {:auth_plug, "~> 1.5.1"}
+    {:auth_plug, "~> 1.5.1"},
   ]
 end
 ```
 
-And run `mix deps.get`.
-If you [follow the package instructions](https://github.com/dwyl/auth_plug)
+Once you've saved the file, 
+run:
+```
+mix deps.get
+```
+
+Follow the 
+[instructions](https://github.com/dwyl/auth_plug#2-get-your-auth_api_key-)
 and get your `AUTH_API_KEY`.
 
-Now head over to `lib/app_web/router.ex`
-and add the following lines of code.
+Next create a file called: `.env` 
+and paste the `AUTH_API_KEY`, e.g:
+
+```sh
+export AUTH_API_KEY=YOURKEYHERE
+```
+
+> **Note**: **never `commit` the `.env` file** to `GitHub` 
+as it contains sensitive information you don't want others to see.
+
+Open:
+`lib/app_web/router.ex`
+and add the following lines of code:
 
 ```elixir
   pipeline :auth, do: plug(AuthPlug)
@@ -118,24 +155,15 @@ for logged in users because we are using the
 
 We are using `AppController`, 
 which is not yet created. 
-Create the following files.
+Create the following 4 files:
 
-- `lib/app_web/controllers/app_controller.ex`
-- `lib/app_web/controllers/app_html.ex`
-- `lib/app_web/controllers/app_html/app.html.heex`
-
-Inside `app_html.ex`, add the following code.
-
-```elixir
-defmodule AppWeb.AppHTML do
-  use AppWeb, :html
-
-  embed_templates "app_html/*"
-end
-```
+1. `lib/app_web/controllers/app_controller.ex`
+2. `lib/app_web/controllers/app_html.ex`
+3. `lib/app_web/controllers/app_html/app.html.heex`
+4. `test/app_web/controllers/auth_controller_test.exs`
 
 
-Inside `app_controller.ex`, add the following code.
+In `app_controller.ex`, add the following code:
 
 ```elixir
 defmodule AppWeb.AppController do
@@ -147,7 +175,18 @@ defmodule AppWeb.AppController do
 end
 ```
 
-And finally, inside `app_html/app.html.heex`:
+In `app_html.ex`, 
+add the following code:
+
+```elixir
+defmodule AppWeb.AppHTML do
+  use AppWeb, :html
+
+  embed_templates "app_html/*"
+end
+```
+
+In `app_html/app.html.heex`:
 
 ```html
 <div>
@@ -155,20 +194,65 @@ And finally, inside `app_html/app.html.heex`:
 </div>
 ```
 
-Now, you can create a local file 
-called `.env` 
-(don't forget to **never commit this file**, 
-as it contains sensitive information and API keys)
-and paste the following.
+In `test/app_web/controllers/auth_controller_test.exs`:
 
-```sh
-export AUTH_API_KEY=XXXX
+```elixir
+defmodule AppWeb.AuthControllerTest do
+  use AppWeb.ConnCase, async: true
+
+  test "Logout link displayed when loggedin", %{conn: conn} do
+    data = %{
+      username: "test_username",
+      email: "test@email.com",
+      givenName: "John Doe",
+      picture: "this",
+      auth_provider: "GitHub",
+      id: 1
+    }
+
+    jwt = AuthPlug.Token.generate_jwt!(data)
+
+    conn = get(conn, "/?jwt=#{jwt}")
+    assert html_response(conn, 200) =~ "logout"
+  end
+
+  test "get /logout with valid JWT", %{conn: conn} do
+    data = %{
+      email: "al@dwyl.com",
+      givenName: "Al",
+      picture: "this",
+      auth_provider: "GitHub",
+      id: 1
+    }
+
+    jwt = AuthPlug.Token.generate_jwt!(data)
+
+    conn =
+      conn
+      |> put_req_header("authorization", jwt)
+      |> get("/logout")
+
+    assert "/" = redirected_to(conn, 302)
+  end
+
+  test "test login link redirect to authdemo.fly.dev", %{conn: conn} do
+    conn = get(conn, "/login")
+    assert redirected_to(conn, 302) =~ "authdemo.fly.dev"
+  end
+end
 ```
 
-If you run `source .env` 
-and restart your server with `mix phx.server`
+
+If you run: 
+```sh
+source .env
+```
+
+and restart your server with:
+`mix phx.server`
 and access `/dashboard` directly,
-you will be redirected to a page where you can SSO using Google or Github.
+you will be redirected to a page 
+where you can SSO using `Google` or `Github`.
 
 <img width="1345" alt="redirection" src="https://user-images.githubusercontent.com/17494745/209158781-5242b18f-9abb-4c0c-8703-5be7ed9509f7.png">
 

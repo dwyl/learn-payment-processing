@@ -31,12 +31,12 @@ of ...
 > you're the product._" 
 > ~ [Jonathan Zittrain](https://blogs.harvard.edu/futureoftheinternet/2012/03/21/meme-patrol-when-something-online-is-free-youre-not-the-customer-youre-the-product/)
 
-We prefer to charge an affordable fee -
-enough to cover all our costs 
+We prefer to charge an **affordable fee** -
+enough to **cover** all our **costs** 
 and continue building our 
 [roadmap](https://github.com/dwyl/product-roadmap) -
-and _fiercely_ guard the privacy 
-of the `people` using the App.
+and **_fiercely_ guard** the **privacy** 
+of the **`people`** using the App.
 
 The goal of this guide is to cover 
 both the theory and _practice_ 
@@ -46,8 +46,10 @@ in a standalone web app.
 
 # Who? 🤓
 
-This guide is meant as both an **_internal_ reference** fo us **`@dwyl`** <br />
-and a _fully_ Open Source resource that _anyone_ can read and learn from.
+This guide is meant as both 
+an **_internal_ reference** for us **`@dwyl`** <br />
+and a **_fully_ Open Source resource** 
+that _anyone_ can read and learn from.
 
 As always, if you find it helpful/useful please star the repo on GitHub ⭐ 🙏 Thanks!
 
@@ -390,6 +392,7 @@ https://stackshare.io/stackups/paddle-vs-stripe
 At present very few companies use `Paddle`,
 but those who do are quite vocal about it:
 
+![paddle-tailwind-ui](https://user-images.githubusercontent.com/194400/210031861-3a5a0d76-e406-4b4b-8bea-2fa7b04e0f82.png)
 
 
 Depending on the use-case or your choice,
