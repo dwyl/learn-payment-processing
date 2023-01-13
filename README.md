@@ -3,10 +3,10 @@
 # Learn Payment Processing 💳
 
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/dwyl/learn-payment-processing/ci.yml?label=build&style=flat-square&branch=main)
-[![codecov.io](https://img.shields.io/codecov/c/github/dwyl/learn-payment-processing/main.svg?style=flat-square)](https://codecov.io/github/dwyl/phoenix-chat-example?branch=main)
-[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/dwyl/phoenix-chat-example/issues)  
+[![codecov.io](https://img.shields.io/codecov/c/github/dwyl/learn-payment-processing/main.svg?style=flat-square)](https://codecov.io/github/dwyl/learn-payment-processing?branch=main)
 [![HitCount](https://hits.dwyl.com/dwyl/learn-payment-processing.svg?style=flat-square)](http://hits.dwyl.com/dwyl/learn-payment-processing)
-  
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/dwyl/phoenix-chat-example/issues)  
+
 Learn what payment processing is 
 and how you can add it to your App
 to get _paid_! 🎉
