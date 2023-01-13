@@ -66,7 +66,7 @@ defmodule App.MixProject do
       {:stripity_stripe, "~> 2.17"},
 
       # Storage
-      {:pockets, "~> 0.1.0"},
+      {:pockets, "~> 1.4.0"},
 
       # Mocking for testing
       {:mock, "~> 0.3.0", only: :test}
