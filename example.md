@@ -1092,4 +1092,4 @@ or have a better way of managing them
 or any other ideas or suggestions for improvements 
 please tell us!!
 
-[![HitCount](https://hits.dwyl.com/dwyl/learn-payment-processing-example.svg?style=flat-square)](http://hits.dwyl.com/dwyl/learn-payment-processing)
+[![HitCount](https://hits.dwyl.com/dwyl/learn-payment-processing-example.svg?style=flat-square)](https://hits.dwyl.com/dwyl/learn-payment-processing)
