@@ -6,7 +6,7 @@ defmodule AppWeb.PageController do
   end
 
   def success(conn, %{"session_id" => session_id}) do
-    case Stripe.Session.retrieve(session_id) do
+    case Stripe.Checkout.Session.retrieve(session_id) do
       {:ok, session} ->
         person_id = conn.assigns.person.id
 
@@ -32,7 +32,7 @@ defmodule AppWeb.PageController do
   end
 
   def cancel(conn, %{"session_id" => session_id}) do
-    case Stripe.Session.retrieve(session_id) do
+    case Stripe.Checkout.Session.retrieve(session_id) do
       {:ok, _session} ->
         render(conn, :cancel, layout: false)
 

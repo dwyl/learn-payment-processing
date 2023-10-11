@@ -21,7 +21,7 @@ defmodule AppWeb.CheckoutSessionController do
       automatic_tax: %{enabled: true}
     }
 
-    {:ok, session} = Stripe.Session.create(params)
+    {:ok, session} = Stripe.Checkout.Session.create(params)
 
     conn
     |> put_status(303)
