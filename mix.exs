@@ -63,7 +63,7 @@ defmodule App.MixProject do
       {:auth_plug, "~> 1.5.1"},
 
       # Stripe integration
-      {:stripity_stripe, "~> 2.17"},
+      {:stripity_stripe, "~> 3.0"},
 
       # Storage
       {:pockets, "~> 1.4.0"},
