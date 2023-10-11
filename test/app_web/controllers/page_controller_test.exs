@@ -33,7 +33,8 @@ defmodule AppWeb.PageControllerTest do
        %{conn: conn} do
     conn = setup_conn_with_user(conn)
 
-    with_mock Stripe.Checkout.Session, retrieve: fn _session_id -> {:error, nil} end do
+    with_mock Stripe.Checkout.Session,
+      retrieve: fn _session_id -> {:error, nil} end do
       conn = get(conn, ~p"/purchase/success?session_id=123")
       assert redirected_to(conn, 303) == ~p"/"
     end
@@ -60,7 +61,8 @@ defmodule AppWeb.PageControllerTest do
        %{conn: conn} do
     conn = setup_conn_with_user(conn)
 
-    with_mock Stripe.Checkout.Session, retrieve: fn _session_id -> {:error, nil} end do
+    with_mock Stripe.Checkout.Session,
+      retrieve: fn _session_id -> {:error, nil} end do
       conn = get(conn, ~p"/purchase/cancel?session_id=123")
       assert redirected_to(conn, 303) == ~p"/"
     end
