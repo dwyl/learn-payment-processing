@@ -561,7 +561,7 @@ defmodule AppWeb.CheckoutSessionController do
       automatic_tax: %{enabled: true}
     }
 
-    {:ok, session} = Stripe.Session.create(params)
+    {:ok, session} = Stripe.Checkout.Session.create(params)
 
     conn
     |> put_status(303)
@@ -572,7 +572,7 @@ end
 
 Let's analyze the code.
 
-We are using `Stripe.session.create/1` 
+We are using `Stripe.Checkout.Session.create/1` 
 to create a [`Session`](https://stripe.com/docs/api/checkout/sessions)
 in Stripe. 
 We need to pass a few required parameters. 
@@ -666,7 +666,7 @@ and add the following piece of code:
 
 ```elixir
   def success(conn, %{"session_id" => session_id}) do
-    case Stripe.Session.retrieve(session_id) do
+    case Stripe.Checkout.Session.retrieve(session_id) do
       {:ok, _session} ->
         render(conn, :success, layout: false)
 
@@ -685,7 +685,7 @@ and add the following piece of code:
 
   def cancel(conn, %{"session_id" => session_id}) do
 
-    case Stripe.Session.retrieve(session_id) do
+    case Stripe.Checkout.Session.retrieve(session_id) do
       {:ok, _session} ->
         render(conn, :cancel, layout: false)
 
@@ -721,7 +721,7 @@ we check if the `session_id` is valid
 by retrieving it from `Stripe`.
 
 ```elixir
-Stripe.Session.retrieve(session_id)
+Stripe.Checkout.Session.retrieve(session_id)
 ```
 
 If it is successful, we render a page confirming the payment.
@@ -997,7 +997,7 @@ Change the handler, so it looks like the following:
 ```elixir
 def success(conn, %{"session_id" => session_id}) do
 
-  case Stripe.Session.retrieve(session_id) do
+  case Stripe.Checkout.Session.retrieve(session_id) do
     {:ok, session} ->
 
       person_id = conn.assigns.person.id
