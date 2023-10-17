@@ -57,7 +57,7 @@ defmodule App.MixProject do
       {:plug_cowboy, "~> 2.5"},
 
       # Tracking test coverage
-      {:excoveralls, "~> 0.17.0", only: [:test, :dev]},
+      {:excoveralls, "~> 0.18.0", only: [:test, :dev]},
 
       # Auth
       {:auth_plug, "~> 1.5.1"},
