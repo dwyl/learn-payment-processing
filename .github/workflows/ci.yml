@@ -12,8 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        otp: ['24.3.4']
-        elixir: ['1.14.1']
+        otp: ['28.0.1']
+        elixir: ['1.18.4']
     steps:
     - uses: actions/checkout@v2
     - name: Set up Elixir
