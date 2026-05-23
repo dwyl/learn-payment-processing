@@ -30,7 +30,7 @@ defmodule App.DataCase do
   @doc """
   Sets up the sandbox based on the test tags.
   """
-  def setup_sandbox(tags) do
+  def setup_sandbox(_tags) do
   end
 
   @doc """
@@ -41,6 +41,6 @@ defmodule App.DataCase do
       assert %{password: ["password is too short"]} = errors_on(changeset)
 
   """
-  def errors_on(changeset) do
+  def errors_on(_changeset) do
   end
 end
