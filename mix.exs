@@ -10,14 +10,7 @@ defmodule App.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
-      test_coverage: [tool: ExCoveralls],
-      preferred_cli_env: [
-        c: :test,
-        coveralls: :test,
-        "coveralls.json": :test,
-        "coveralls.html": :test,
-        t: :test
-      ]
+      test_coverage: [tool: ExCoveralls]
     ]
   end
 
@@ -90,6 +83,19 @@ defmodule App.MixProject do
       t: ["test"],
       c: ["coveralls.html"],
       s: ["phx.server"]
+    ]
+  end
+
+  def cli do
+    [
+      preferred_envs: [
+        c: :test,
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test,
+        docs: :docs
+      ]
     ]
   end
 end
